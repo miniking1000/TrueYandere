@@ -1,0 +1,9 @@
+name: TrueYandere
+version: '${version}'
+main: org.pythonchik.trueyandere.TrueYandere
+authors: ["hihi", "haha", "hehe"]
+api-version: '1.21'
+commands:
+  race:
+    description: cheese your *******
+    usage: /race

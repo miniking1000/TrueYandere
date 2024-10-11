@@ -1,0 +1,60 @@
+persistent data container:
+id: "race"
+type: str
+values: driven from config,
+default: "human"
+"human" MUST ALWAYS BE IN CONFIG!
+----
+id: "CH4NGE"
+type: int
+values: any positive (including 0)
+default: - 1
+how many times player can change the race
+
+chest slot ids:
+==============================================
+|  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |
+|  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 |
+| 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 |
+==============================================
+
+config:
+entry_name:  # must be unique, also the id that is in the player data
+  race: true  # this is a race entry, or false it is an info entry
+  slot: 0    # slot in which the item will be
+  id: 0    # id of the race in the player data, DO NOT CHANGE AFTER FIRST LAUNCH, must be unique
+  # THEN ONLY RACE SPECIFIC FIELDS:
+  attributes:
+    GENERIC_MAX_HEALTH: 10 # what attribute to change and to what base value
+  foods:
+    - APPLE   # favourite foods
+    - SALMON
+  skin:
+    f: "ftp://"   # link to a png file with skin texture
+    m: "http://"   # Male and Female versions of skins
+  menu_head: "https://"   # link to a textures.minecraft.com  site with a skin texture for head in menu
+  # menu_head ALWAYS HAVE TO GO TO textures.minecraft.com WILL NOT WORK OTHERWISE!!!!
+  menu_name: "name"    #name of the head in menu, supports HEX
+  menu_lore:
+    - "lore"    # lore lines in the menu, supports HEX
+    - "lore2"   # {Hapax Legomenon} будет заменено на флаконы душ
+  effects:
+    REGENERATION: 1  # effects to be applied to a player
+    STRENGTH: 0
+  sub_effects:  # optional if needed
+    REGENERATION: 0 # effects if conditions if not set
+  sub_attributes:  # optional, remove if not needed
+    GENERIC_MAX_HEALTH: 5
+  # biomes are optional, remove if not needed
+  biomes:  # list of biomes, if players is in them triggers effects and attributes otherwise sub_effects and sub_attributes
+    - plains  #biomes (lowercased, IMPORTANT!!!!)
+  # height is optional, remove if not needed
+  height: 0 #must be above this number  to trigger effects, else sub_effects(same to attributes)
+
+
+  # THEN ONLY INFO SPECIFIC FIELDS
+  material: "PAPER"   #what item to use as info item
+  name: "info1"   # name of the file in the menu
+  lore:
+    - "lore1"   # lore in the menu (the info itself)
+    - "lore2"

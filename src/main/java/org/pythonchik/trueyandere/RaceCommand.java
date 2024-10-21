@@ -29,18 +29,17 @@ public class RaceCommand implements CommandExecutor {
                 Player play = (Player) sender;
                 Menu.OpenMenu(play, plugin);
             } else {
-                logger.info("Используй reload или set/set_race player_name [arg]");
+                logger.info("Используй reload или add/set/set_race player_name [arg]");
             }
         } else {
-            if (args[0].equals("reload") || args[0].equals("set") || args[0].equals("set_race")) {
+            if (args[0].equals("reload") || args[0].equals("set") || args[0].equals("set_race") || args[0].equals("add")) {
                 // reload - reload plugin
                 // set - set someone's race to X
                 // add - add a change token(s) to someone
                 // remove - remove a change token(s) from someone
                 if (Player) {
                     if (!sender.isOp()) {
-                        message.send(sender, "Тут могла быть пасхалка, но фокс все равно изменит команду :(");
-                        message.send(sender, "Обновление информации, если вдруг не изменит, то как только найдете в ЛС к miniking1000, и не говорить об этом админам");
+                        message.send(sender, "Всем внимание, фокся знал об этой пасхалке, но он не знал что я её только что поменял!");
                         return true;
                     }
                 }
@@ -109,6 +108,27 @@ public class RaceCommand implements CommandExecutor {
                         } else {
                             logger.info("У игрока " + args[1] + " уже и так " + args[2] + " флаконов душ");
                         }
+                    } else if (args[0].equalsIgnoreCase("add")) {
+                        Player player = sender.getServer().getPlayer(args[1]);
+                        if (player == null) {
+                            if (Player) {
+                                message.send(sender, "Игрок &6" + sender + " &fне найден.");
+                            } else {
+                                logger.info("Игрок " + sender + " не найден.");
+                            }
+                            return true;
+                        }
+                        player.getPersistentDataContainer().set(new NamespacedKey(plugin, "CH4NGE"), PersistentDataType.INTEGER, Integer.valueOf(args[2])+player.getPersistentDataContainer().get(new NamespacedKey(plugin, "CH4NGE"), PersistentDataType.INTEGER));
+                        if (!(args.length >= 4 && (args[3].equalsIgnoreCase("silent") || args[3].equalsIgnoreCase("[silent]")))) {
+                            message.send(player, "&7Теперь у вас на &r" + args[2] + " &7флаконов душ больше");
+                        }
+                        if (Player) {
+                            message.send(sender, "Теперь у игрока &6" + args[1] + " &fколичество флаконов душ увеличено на &6" + args[2]);
+                        } else {
+                            logger.info("Теперь у игрока " + args[1] + " стало на " + args[2] + " флаконов душ больше");
+                        }
+                        return true;
+
                     }
                 } else {
                     if (Player) {

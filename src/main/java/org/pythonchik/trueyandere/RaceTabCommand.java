@@ -24,6 +24,7 @@ public class RaceTabCommand implements TabCompleter {
                     List<String> completions = new ArrayList<>();
                     completions.add("reload");
                     completions.add("set");
+                    completions.add("add");
                     completions.add("set_race");
                     return completions;
 
@@ -32,6 +33,13 @@ public class RaceTabCommand implements TabCompleter {
                     for (Player name : Bukkit.getOnlinePlayers()) {
                         completions.add(name.getName());
                     }
+                    return completions;
+
+                } else if (args.length == 3 && args[0].equals("add")) {
+                    List<String> completions = new ArrayList<>();
+                    completions.add("1");
+                    completions.add("2");
+                    completions.add("999");
                     return completions;
 
                 } else if (args.length == 3 && args[0].equals("set")) {
@@ -50,7 +58,7 @@ public class RaceTabCommand implements TabCompleter {
                     } else {
                         return new ArrayList<>(List.of("Пожалуйста, напиши нормального игрока, а не это -> " + args[1]));
                     }
-                } else if (args.length == 4 && (args[0].equals("set") || args[0].equals("set_race"))) {
+                } else if (args.length == 4 && (args[0].equals("set") || args[0].equals("set_race") || args[0].equals("add"))) {
                     return new ArrayList<>(List.of("[silent]"));
                 }
 

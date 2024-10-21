@@ -1,8 +1,10 @@
 package org.pythonchik.trueyandere;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.BlockType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -63,8 +65,8 @@ public final class TrueYandere extends JavaPlugin {
                 return;
             }
             if (race_temp.getKeys(false).contains("biomes") || race_temp.getKeys(false).contains("height")) {
-                if (race_temp.getKeys(false).contains("height")){
-                    //height
+                if (race_temp.getKeys(false).contains("height")) {
+                    // height
                     boolean condition = player.getLocation().getY() >= race_temp.getInt("height");
                     if (condition) {
                         if (race_temp.getKeys(false).contains("effects")) {
@@ -75,7 +77,7 @@ public final class TrueYandere extends JavaPlugin {
                                 }
                             }
                         }
-                    } //effects
+                    } // effects
                     else {
                         if (race_temp.getKeys(false).contains("sub_effects")) {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
@@ -86,42 +88,32 @@ public final class TrueYandere extends JavaPlugin {
                             }
                         }
                     }
-                    if (player.getPersistentDataContainer().has(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"))) { // should always work, may not work if config have changed
-                        if (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) == 0
-                                || (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) < 0 && condition)
-                                || (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) > 0 && !condition)) {
-                            setDefaultAttributes(player);
-                            if (condition) {
-
-                                if (race_temp.getKeys(false).contains("attributes")) {
-                                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
-                                    if (section != null) {
-                                        for (String attribute : section.getKeys(false)) {
-                                            player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                        }
-                                    }
+                    setDefaultAttributes(player);
+                    if (condition) {
+                        if (race_temp.getKeys(false).contains("attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
+                            if (section != null) {
+                                for (String attribute : section.getKeys(false)) {
+                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
                                 }
-                                player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, 1);
-                            } //You are above, use main
-                            else {
-
-                                if (race_temp.getKeys(false).contains("sub_attributes")) {
-                                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
-                                    if (section != null) {
-                                        for (String attribute : section.getKeys(false)) {
-                                            player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                        }
-                                    }
-                                }
-                                player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, -1);
-                            } //You are below, use SUB
+                            }
                         }
-                    } else {
-                        player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, 0);
-                    }
+
+                    } // You are above, use main
+                    else {
+                        if (race_temp.getKeys(false).contains("sub_attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
+                            if (section != null) {
+                                for (String attribute : section.getKeys(false)) {
+                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
+                                }
+                            }
+                        }
+
+                    } // You are below, use SUB
                 } else {
                     //biomes
-                    boolean condition = race_temp.getStringList("biomes").contains(player.getLocation().getWorld().getBiome(player.getLocation()).getKey().getKey().toLowerCase()); //player is in biome
+                    boolean condition = race_temp.getStringList("biomes").contains(player.getLocation().getWorld().getBiome(player.getLocation()).getKey().getKey().toLowerCase()) || (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING).equals("aksol") && player.getLocation().getBlock().isLiquid() && player.getLocation().getBlock().getType().toString().toLowerCase().contains("water")); //player is in biome
                     if (condition){
                         if (race_temp.getKeys(false).contains("effects")) {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
@@ -131,7 +123,7 @@ public final class TrueYandere extends JavaPlugin {
                                 }
                             }
                         }
-                    } //effects
+                    } // effects
                     else {
                         if (race_temp.getKeys(false).contains("sub_effects")) {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
@@ -142,37 +134,28 @@ public final class TrueYandere extends JavaPlugin {
                             }
                         }
                     }
-                    if (player.getPersistentDataContainer().has(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"))) { // should always work, may not work if config have changed
-                        if (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) == 0
-                                || (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) < 0 && condition)
-                                || (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) > 0 && !condition)) {
-                            setDefaultAttributes(player);
-                            if (condition) {
-                                if (race_temp.getKeys(false).contains("attributes")) {
-                                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
-                                    if (section != null) {
-                                        for (String attribute : section.getKeys(false)) {
-                                            player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                        }
-                                    }
+                    setDefaultAttributes(player);
+                    if (condition) {
+                        if (race_temp.getKeys(false).contains("attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
+                            if (section != null) {
+                                for (String attribute : section.getKeys(false)) {
+                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
                                 }
-                                player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, 1);
-                            } //You are above, use main
-                            else {
-                                if (race_temp.getKeys(false).contains("sub_attributes")) {
-                                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
-                                    if (section != null) {
-                                        for (String attribute : section.getKeys(false)) {
-                                            player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                        }
-                                    }
-                                }
-                                player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, -1);
-                            } //You are below, use SUB
+                            }
                         }
-                    } else {
-                        player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, 0);
-                    }
+                    } // You are above, use main
+                    else {
+                        if (race_temp.getKeys(false).contains("sub_attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
+                            if (section != null) {
+                                for (String attribute : section.getKeys(false)) {
+                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
+                                }
+                            }
+                        }
+
+                    } // You are below, use SUB
                 }
             } else {  // unconditionally
                 if (race_temp.getKeys(false).contains("effects")) {
@@ -183,17 +166,14 @@ public final class TrueYandere extends JavaPlugin {
                         }
                     }
                 }
-                if (player.getPersistentDataContainer().has(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) && player.getPersistentDataContainer().get(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER) == 0) {
-                    setDefaultAttributes(player);
-                    if (race_temp.getKeys(false).contains("attributes")) {
-                        ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
-                        if (section != null) {
-                            for (String attribute : section.getKeys(false)) {
-                                player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                            }
+                setDefaultAttributes(player);
+                if (race_temp.getKeys(false).contains("attributes")) {
+                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
+                    if (section != null) {
+                        for (String attribute : section.getKeys(false)) {
+                            player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
                         }
                     }
-                    player.getPersistentDataContainer().set(new NamespacedKey(plugin, "shikanono_nokonoko_koshitantan"), PersistentDataType.INTEGER, 1);
                 }
             }
         }
@@ -226,8 +206,6 @@ public final class TrueYandere extends JavaPlugin {
         if (player.getAttribute(Attribute.GENERIC_GRAVITY) != null) {
             player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.08);
         }
-        // Btw, what is your favorite food, someone who reads this? please make a commit with your username and food below:
-        // I will start, miniking1000 - honey
         if (player.getAttribute(Attribute.GENERIC_JUMP_STRENGTH) != null) {
             player.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).setBaseValue(0.41999998688697815);
         }

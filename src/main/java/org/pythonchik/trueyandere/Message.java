@@ -11,11 +11,14 @@ public class Message {
 
     private final TrueYandere plug;
     public Message(TrueYandere plug) {this.plug = plug;}
-    public void send(CommandSender sender,String message) {
-        sender.sendMessage(recreator(message));
+    public void send(CommandSender sender, String message) {
+        send(sender, message, true);
     }
-    public String recreator(String message) {
-        return hexPerfix(message);
+    public void send(CommandSender sender, String message, boolean withPrefix) {
+        sender.sendMessage(recreator(message, withPrefix));
+    }
+    public String recreator(String message, boolean withPrefix) {
+        return hexPerfix(message, withPrefix);
     }
     public String hex(String message) {
         Pattern pattern = Pattern.compile("(#[a-fA-F0-9]{6})");
@@ -55,7 +58,7 @@ public class Message {
         }
         return result;
     }
-    public String hexPerfix(String message){
-        return hex("&7[&6Расы&7]&r " + message);
+    public String hexPerfix(String message, boolean withPrefix) {
+        return withPrefix ? hex("&7[&6Расы&7]&r " + message) : hex(message);
     }
 }

@@ -53,7 +53,7 @@ public class RaceTabCommand implements TabCompleter {
                 } else if (args.length == 3 && args[0].equals("set_race")) {
                     if (Bukkit.getServer().getPlayer(args[1]) != null) {
                         List<String> completions = new ArrayList<>(config.getKeys(false));
-                        completions.removeIf(compel -> Bukkit.getServer().getPlayer(args[1]).getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING).equals(compel) || !config.getBoolean(compel + ".race"));
+                        completions.removeIf(compel -> Bukkit.getServer().getPlayer(args[1]).getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING).equals(compel) || config.getString(compel + ".type", "info").equals("info"));
                         return completions;
                     } else {
                         return new ArrayList<>(List.of("Пожалуйста, напиши нормального игрока, а не это -> " + args[1]));

@@ -20,7 +20,9 @@ chest slot ids:
 
 config:
 entry_name:  # must be unique, also the id that is in the player data
-  race: true  # this is a race entry, or false it is an info entry
+  race: true  # this is a race entry, or false it is an info entry old
+  type: "race"  # "race", "info", "combined"
+  class: "humanlike"  # type of the race "humanlike" "animaLike" "other" "combined"
   slot: 0    # slot in which the item will be
   id: 0    # id of the race in the player data, DO NOT CHANGE AFTER FIRST LAUNCH, must be unique
   # THEN ONLY RACE SPECIFIC FIELDS:

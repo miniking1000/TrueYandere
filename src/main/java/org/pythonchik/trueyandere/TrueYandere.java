@@ -1,6 +1,7 @@
 package org.pythonchik.trueyandere;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -19,28 +20,38 @@ import java.io.File;
 import java.util.Objects;
 
 public final class TrueYandere extends JavaPlugin {
-    private static FileConfiguration config;
+    public static FileConfiguration config;
     Plugin plugin = this;
+    static TrueYandere instance;
     public static Message message;
     public static Message getMessage(){return message;}
-    public static String getMenuName(){return  message.hex("&7[&6Расы&7]");}
+    public static String getMenuName(){return message.hex("&7[&6Расы&7]");}
+    public static TrueYandere getPlugin() {
+        return instance;
+    }
     public void reload5(){
-        Bukkit.getPluginManager().disablePlugin(plugin);
-        Bukkit.getPluginManager().enablePlugin(plugin);
+        plugin = this;
+        instance = this;
+        loadConfig();
+        new Menu(this, config);
     }
 
 
     @Override
     public void onEnable() {
         plugin = this;
+        instance = this;
         loadConfig();
+        CraftManager.registerCrafts(this);
         message = new Message(this);
         new Menu(this,config);
         getCommand("race").setExecutor(new RaceCommand(this,config));
         getCommand("race").setTabCompleter(new RaceTabCommand(this,config));
-        getServer().getPluginManager().registerEvents(new listeners(this,config),this);
+        listeners listnrs = new listeners(this, config);
+        getServer().getPluginManager().registerEvents(listnrs,this);
         getServer().getScheduler().runTaskTimer(plugin, this::applyEffects, 100, 100);
         // Plugin startup logic
+        Bukkit.getScheduler().runTaskTimer(this, listnrs::task, 20L, 20L);
 
     }
 
@@ -60,6 +71,7 @@ public final class TrueYandere extends JavaPlugin {
 
     public void applyEffects() {
         for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.getGameMode().equals(GameMode.SURVIVAL)) continue;
             ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING)));
             if (race_temp == null) {
                 return;

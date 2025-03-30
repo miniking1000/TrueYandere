@@ -1,0 +1,393 @@
+human:
+  type: "race"
+  class: "humanlike"
+  slot: 1
+  menu_head: "http://textures.minecraft.net/texture/3fb7213b724c6bb9163e031791788dd4792436b4cd0ce7a2854f7ef231781a"
+  menu_name: "&6Человек"
+  menu_lore:
+    - "&7Простой работяга, изначальный вариант игры, ванилен и так же непредсказуем, как другие расы."
+
+elf:
+  type: "race"
+  class: "humanlike"
+  slot: 10
+  attributes:
+    GENERIC_SCALE: 1.15
+    GENERIC_SAFE_FALL_DISTANCE: 6
+  effects:
+    SPEED: 1
+  spec:
+    arrow: 3
+  skin:
+    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
+    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
+  menu_head: "http://textures.minecraft.net/texture/36956cc541aee15c42905f313991eec8f70c1d50f231fdd94914dc4476ccb59b"
+  menu_name: "&6Эльф"
+  menu_lore:
+    - "&7Эльфы - хранители леса, отважные лучники, почитающие традиции,"
+    - "&7очень ловкие и хорошо обращаются со стрелковым оружием."
+    - "&7Деревья их дом, они известны своими способностями работы с деревом."
+
+dwarf:
+  type: "race"
+  class: "humanlike"
+  slot: 19
+  attributes:
+    GENERIC_SCALE: 0.5
+    GENERIC_MAX_HEALTH: 20
+    GENERIC_KNOCKBACK_RESISTANCE: 0.7
+  sub_attributes:
+    GENERIC_SCALE: 0.5
+    GENERIC_MAX_HEALTH: 20
+    GENERIC_KNOCKBACK_RESISTANCE: 0.5
+  sub_effects:
+    HASTE: 2
+    SLOWNESS: 1
+  height: 0
+  skin:
+    f: "https://s.namemc.com/i/b3cff68303174c45.png"
+    m: "https://s.namemc.com/i/b3cff68303174c45.png"
+  menu_head: "http://textures.minecraft.net/texture/cade1161319f7f18be5d5e51f1f7f147fb1d2626e8a76ceee446558fa5472205"
+  menu_name: "&6Дварф"
+  menu_lore:
+    - "&7Дварф - эти низкие работяги знают толк в шахтах,"
+    - "&7их мускулатура позволяет быстро копать камень и руду, а так же"
+    - "&7невысокий рост проходить сквозь припятствия, идеальный вариант для шахтёров."
+
+yae:
+  type: "race"
+  class: "animaLike"
+  slot: 3
+  attributes:
+    GENERIC_ATTACK_DAMAGE: 7
+    GENERIC_ATTACK_SPEED: 6
+    GENERIC_KNOCKBACK_RESISTANCE: 0
+  foods:
+    - sweet_berries
+    - glow_berries
+    - cooked_chicken
+    - chicken
+  sub_effects:
+    REGENERATION: 2
+    SATURATION: 2
+    SPEED: 2
+  skin:
+    f: "https://s.namemc.com/i/4cf8441310d2dc9f.png"
+    m: "https://s.namemc.com/i/4cf8441310d2dc9f.png"
+  menu_head: "http://textures.minecraft.net/texture/5f402faf327391694270fbf5cafc3484b10a8e25cdb460bbd744280f54a6830f"
+  menu_name: "&6Кицунэ"
+  menu_lore:
+    - "&7Кицунэ - имеют человеческое тело с лисьими чертами, такими как ушки, хвост и острые клыки."
+    - "&7Они могут иметь от одного до девяти хвостов, каждый из которых символизирует их силу и мудрость."
+    - "&7Известны своими смертоносными атаками, но малым здоровьем."
+
+kadgit:
+  type: "race"
+  class: "animaLike"
+  slot: 12
+  attributes:
+    GENERIC_SCALE: 0.8
+    GENERIC_ATTACK_DAMAGE: 0.8
+    GENERIC_MOVEMENT_SPEED: 0.25
+    GENERIC_JUMP_STRENGTH: 0.55
+    GENERIC_SAFE_FALL_DISTANCE: 8
+  foods:
+    - tropical_fish
+    - cooked_cod
+    - cooked_salmon
+    - salmon
+    - cod
+  sub_effects:
+    ABSORPTION: 1
+    REGENERATION: 1
+  skin:
+    f: "https://s.namemc.com/i/4c937666277cf83d.png"
+    m: "https://s.namemc.com/i/4c937666277cf83d.png"
+  menu_head: "http://textures.minecraft.net/texture/ff3450d0b29c74e78004e22280df625cba2b852688929f0a77fe363a45f433e2"
+  menu_name: "&6Каджит"
+  menu_lore:
+    - "&7Каджиты - независимые и свободолюбивые существа, которые ценят свою свободу и независимость."
+    - "&7Известны своей высокой ловкостью и проворством, что позволяет им легко перемещаться и избегать атак, "
+    - "&7но их когти наносят меньше урона, чем обычные атаки. "
+
+dragon:
+  type: "race"
+  class: "animaLike"
+  slot: 21
+  attributes:
+    GENERIC_SCALE: 1.4
+    GENERIC_MAX_HEALTH: 30
+    GENERIC_MOVEMENT_SPEED: 0.08
+    GENERIC_KNOCKBACK_RESISTANCE: 1
+    GENERIC_ARMOR: 10
+    GENERIC_SAFE_FALL_DISTANCE: 12
+    GENERIC_JUMP_STRENGTH: 0.55
+  foods:
+    - cooked_beef
+    - cooked_porkchop
+    - cooked_mutton
+    - cooked_chicken
+    - cooked_rabbit
+    - cooked_cod
+    - cooked_salmon
+  sub_effects:
+    RESISTANCE: 2
+    REGENERATION: 2
+    SLOWNESS: 2
+  skin:
+    f: "https://s.namemc.com/i/00a1aa8e2da11a8b.png"
+    m: "https://s.namemc.com/i/00a1aa8e2da11a8b.png"
+  menu_head: "http://textures.minecraft.net/texture/347fb45be7fca3175b9ebfc03708b4498ce30bb03a216a9c97e742ad43421766"
+  menu_name: "&6Драконорождённый"
+  menu_lore:
+    - "&7Драконорождённые - выглядят как драконы, стоящие на задних лапах и принявшие гуманоидную форму, "
+    - "&7потеряв при этом крылья и хвост. Известны своим крепким здоровьем, а так же медлительностью."
+
+dimon:
+  type: "race"
+  class: "other"
+  slot: 5
+  attributes:
+    GENERIC_MAX_HEALTH: 40
+    GENERIC_ATTACK_DAMAGE: 3
+    GENERIC_JUMP_STRENGTH: 0.55
+    GENERIC_SAFE_FALL_DISTANCE: 5
+    GENERIC_STEP_HEIGHT: 1
+  sub_attributes:
+    GENERIC_MAX_HEALTH: 12
+    GENERIC_ATTACK_DAMAGE: 0.5
+  sub_effects:
+    SLOWNESS: 1
+    FIRE_RESISTANCE: 1
+  effects:
+    FIRE_RESISTANCE: 1
+    STRENGTH: 2
+    REGENERATION: 2
+  skin:
+    f: "https://s.namemc.com/i/765f55d73cbb47ad.png"
+    m: "https://s.namemc.com/i/765f55d73cbb47ad.png"
+  menu_head: "http://textures.minecraft.net/texture/ddf08c89ff9061179fca0290bb766600ab93fd4e9dae0d4ec19fb917e4e3ea7"
+  menu_name: "&6Демон"
+  menu_lore:
+    - "&7Демон - посланники Незера, их кровь - это лава, они очень хорошо ориентируются в Нижнем мире,"
+    - "&7что позволяет им выдерживать такие температуры - загадка."
+  biomes:
+    - "nether_wastes"
+    - "warped_forest"
+    - "crimson_forest"
+    - "soul_sand_valley"
+    - "basalt_deltas"
+
+aksol:
+  type: "race"
+  class: "other"
+  slot: 14
+  attributes:
+    GENERIC_SCALE: 0.85
+    GENERIC_MAX_HEALTH: 35
+    GENERIC_MOVEMENT_SPEED: 0.4
+    GENERIC_WATER_MOVEMENT_EFFICIENCY: 0.8
+    GENERIC_ATTACK_DAMAGE: 3
+    GENERIC_JUMP_STRENGTH: 0.55
+    GENERIC_SAFE_FALL_DISTANCE: 5
+    GENERIC_STEP_HEIGHT: 1
+  effects:
+    CONDUIT_POWER: 1
+    STRENGTH: 2
+    REGENERATION: 2
+  sub_attributes:
+    GENERIC_SCALE: 0.85
+    GENERIC_MAX_HEALTH: 14
+    GENERIC_MOVEMENT_SPEED: 0.04
+    GENERIC_ATTACK_DAMAGE: 0.5
+  sub_effects:
+    SLOWNESS: 1
+  skin:
+    f: "https://s.namemc.com/i/86fb57a540fa9b23.png"
+    m: "https://s.namemc.com/i/86fb57a540fa9b23.png"
+  menu_head: "http://textures.minecraft.net/texture/69b58df399a05b2d6d3aeb09ca016c283bb649b23879f730e4af98ef1a4a5154"
+  menu_name: "&6Аксол"
+  menu_lore:
+    - "&7Аксол - или по-простому аксолотль, раса амфибий, хорошо плавающих в морях и океанах, "
+    - "&7строители подводных городов."
+    - "&7Известны своими удивительными способностями под водой и регенерацией перед смертью."
+  biomes:
+    - "ocean"
+    - "deep_ocean"
+    - "cold_ocean"
+    - "deep_cold_ocean"
+    - "frozen_ocean"
+    - "deep_frozen_ocean"
+    - "deep_lukewarm_ocean"
+    - "lukewarm_ocean"
+    - "warm_ocean"
+    - "river"
+    - "frozen_river"
+    - "lush_caves"
+
+ararararararararararararararandra:
+  type: "race"
+  class: "other"
+  slot: 23
+  attributes:
+    GENERIC_SCALE: 0.75
+    GENERIC_MAX_HEALTH: 35
+    GENERIC_ATTACK_DAMAGE: 3
+    GENERIC_JUMP_STRENGTH: 0.55
+    GENERIC_SAFE_FALL_DISTANCE: 10
+    GENERIC_STEP_HEIGHT: 1
+  effects:
+    SPEED: 1
+    STRENGTH: 1
+    REGENERATION: 1
+  sub_attributes:
+    GENERIC_SCALE: 0.75
+    GENERIC_MAX_HEALTH: 14
+    GENERIC_SAFE_FALL_DISTANCE: 5
+    GENERIC_ATTACK_DAMAGE: 0.7
+  sub_effects:
+    SLOWNESS: 1
+  skin:
+    f: "https://s.namemc.com/i/ac809d8763a3dd3c.png"
+    m: "https://s.namemc.com/i/ac809d8763a3dd3c.png"
+  menu_head: "http://textures.minecraft.net/texture/d14389ab9f63d4e492cdddca8e5dec471d3d5283d82a457e744eae0dfe07480e"
+  menu_name: "&6Аранара"
+  menu_lore:
+    - "&7Аранара - лесные духи или же просто раса гриболюдей, о них мало что известно,"
+    - "&7но живут они только там, где растут грибы..."
+  biomes:
+    - "swamp"
+    - "mangrove_swamp"
+    - "dark_forest"
+    - "taiga"
+    - "nether_wastes"
+    - "lush_caves"
+    - "mushroom_fields"
+    - "deep_dark"
+
+info1:
+  type: "info"
+  slot: 7
+  material: "PAPER"
+  name: "&6О расах"
+  lore:
+    - "&7Расы - уникальная механика игры на сервере DreamFox, введённая на 5 сезоне, для поддержания разнообразия игры"
+    - "&7и социума игроков, основная цель - разнообразить экономические отношения и идеологические между игроками."
+
+info2:
+  type: "info"
+  slot: 16
+  material: "DRAGON_BREATH"
+  name: "&6Флаконы душ"
+  lore:
+    - "&7У вас {Hapax Legomenon} флаконов душ."
+
+info3:
+  type: "info"
+  slot: 25
+  material: "PAPER"
+  name: "&6Дополнительная информация"
+  lore:
+    - "&7Флаконы душ используются для смены расы, каждая раса стоит 1 флакон души (кроме человека),"
+    - "&7при смене расы тратится флакон души и Вы становитесь тем, кого выбрали. "
+    - "&7Если Вам не понравилась раса, Вы в любой момент сможете вернуться к расе \"Человек\","
+    - "&7однако Флакон души сгорит и Вы не сможете выбрать другую расу."
+    - "&7Флаконы души выдаются как награды за самые значимые ивенты на сервере, по-другому их не получить."
+    - "&7Расы \"Демон\", \"Аксол\", \"Аранара\" - можно выбрать только в соответствующем их биоме,"
+    - "&7не рекомендуется их выбирать, если Вы не хотите жить в \"их\" биомах - выбирайте на свой страх и риск."
+
+angel:
+  type: "combined"
+  class: "combined"
+  craft: "humanlike;human+other;dimon"
+  attributes:
+    GENERIC_MAX_HEALTH: 36
+    GENERIC_ATTACK_DAMAGE: 3
+    GENERIC_JUMP_STRENGTH: 0.55
+    GENERIC_SAFE_FALL_DISTANCE: 15
+    GENERIC_GRAVITY: 0.06
+  effects:
+    STRENGTH: 1
+    REGENERATION: 1
+  sub_attributes:
+    GENERIC_ATTACK_DAMAGE: 0.7
+  sub_effects:
+    SLOWNESS: 1
+  height: 100
+  skin:
+    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
+    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
+  menu_name: "&6Ангел"
+
+elh:
+  type: "combined"
+  class: "combined"
+  craft: "humanlike;elf+animaLike;*"
+  attributes:
+    GENERIC_SCALE: 1.15
+    GENERIC_MAX_HEALTH: 30
+    GENERIC_SAFE_FALL_DISTANCE: 6
+    GENERIC_MOVEMENT_SPEED: 0.15
+    GENERIC_KNOCKBACK_RESISTANCE: 0.8
+  effects:
+    SPEED: 1
+  sub_effects:
+    REGENERATION: 2
+    SATURATION: 2
+  foods:
+    - sweet_berries
+    - glow_berries
+    - cooked_cod
+    - cooked_salmon
+    - cooked_beef
+    - cooked_porkchop
+    - cooked_mutton
+    - cooked_chicken
+    - cooked_rabbit
+    - cooked_cod
+    - cooked_salmon
+  spec:
+    arrow: 2
+  skin:
+    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
+    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
+  menu_name: "&6Эльх"
+
+voiddude:
+  type: "combined"
+  class: "combined"
+  craft: "other;ararararararararararararararandra+animaLike;dragon"
+  attributes:
+    GENERIC_MAX_HEALTH: 30
+  effects:
+    SPEED: 1
+  skin:
+    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
+    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
+  menu_name: "&6Пустотник"
+
+cobble:
+  type: "combined"
+  class: "combined"
+  craft: "animaLike;dragon+humanlike;dwarf"
+  attributes:
+    GENERIC_MAX_HEALTH: 30
+  effects:
+    SPEED: 1
+  skin:
+    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
+    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
+  menu_name: "&6Кобальд"
+
+hydra:
+  type: "combined"
+  class: "combined"
+  craft: "other;aksol+animaLike;dragon"
+  attributes:
+    GENERIC_MAX_HEALTH: 30
+  effects:
+    SPEED: 1
+  skin:
+    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
+    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
+  menu_name: "&6Гидра"

@@ -40,13 +40,13 @@ public class Menu {
             }
         }
         for (String name : config.getKeys(false)) { // race entry
-            if (config.getBoolean(name + ".race")) {
+            if (config.getString(name + ".type", "nothing").equalsIgnoreCase("race")) {
                 ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
                 ItemMeta meta = itemStack.getItemMeta();
                 SkullMeta skullMeta = (SkullMeta) meta;
                 PlayerProfile playerProfile = Bukkit.createPlayerProfile(UUID.randomUUID(), "noone");
                 try {
-                    URL url = new URL(config.getString(name + ".menu_head") != null ? config.getString(name + ".menu_head") : "http://textures.minecraft.net/texture/3a41061ed854151fdda13f683dbe2997a2735caa5a2a59a5699314602a14f9");
+                    URL url = new URL(config.getString(name + ".menu_head", "http://textures.minecraft.net/texture/3a41061ed854151fdda13f683dbe2997a2735caa5a2a59a5699314602a14f9"));
                     PlayerTextures textures = playerProfile.getTextures();
                     textures.setSkin(url);
                     playerProfile.setTextures(textures);
@@ -59,8 +59,9 @@ public class Menu {
                 skullMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "i-race"), PersistentDataType.STRING, name);
                 itemStack.setItemMeta(skullMeta);
                 stacks[config.getInt(name + ".slot")] = itemStack;
-            } else {
-                Material item = Material.getMaterial(config.getString(name + ".material") != null ? config.getString(name + ".material") : "BEDROCK");
+
+            } else if (config.getString(name + ".type", "nothing").equalsIgnoreCase("info")) {
+                Material item = Material.getMaterial(config.getString(name + ".material", "BEDROCK"));
                 ItemStack stack = new ItemStack(item);
                 ItemMeta meta = stack.getItemMeta();
                 meta.setDisplayName(config.getString(name + ".name") != null ? message.hex(config.getString(name + ".name")) : "NO INFO NAME");

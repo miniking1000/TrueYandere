@@ -10,10 +10,13 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -34,7 +37,11 @@ public class listeners implements Listener {
     TrueYandere plugin;
     FileConfiguration config;
     private final HashMap<UUID, Long> lastUse = new HashMap<>();
-    private final long cooldownMillis = 20 * 60 * 1000; //
+    private final long cooldownMillis = 20 * 60 * 1000; // 20 min
+    private final HashMap<UUID, Long> voiddudescd = new HashMap<>();
+    private final long voidCDMS = 20 * 1000; // 20 sec
+
+
 
     public listeners(TrueYandere plugin, FileConfiguration config) {
         this.plugin = plugin;
@@ -74,9 +81,9 @@ public class listeners implements Listener {
         player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, player.getLocation().add(0, 1, 0), 30);
 
         // Эффекты
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 800, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 1, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 800, 0, false, false));
 
         // Сброс состояния
         player.setFireTicks(0);
@@ -87,6 +94,66 @@ public class listeners implements Listener {
         lastUse.put(player.getUniqueId(), now);
     }
 
+    @EventHandler
+    public void onVoidgoomClick(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("voiddude")) {
+            long now = System.currentTimeMillis();
+            Long lastUsed = voiddudescd.get(player.getUniqueId());
+            if (lastUsed != null && now - lastUsed < voidCDMS) return;
+            if (!player.isSneaking()) return;
+            if (!event.getAction().equals(Action.RIGHT_CLICK_AIR)) return;
+            // only voiddudes here!
+            ItemStack offstack = player.getInventory().getItemInOffHand();
+            if (offstack != null && offstack.getType().equals(Material.TOTEM_OF_UNDYING)){
+                // only totems here!
+                if (event.getClickedBlock() == null) {
+                    // on air
+                    EnderPearl pearl = player.launchProjectile(EnderPearl.class);
+                    pearl.setShooter(player);
+                    voiddudescd.put(player.getUniqueId(), System.currentTimeMillis());
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+
+        if (!event.getPlayer().getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("cobble")) {
+
+            if (event.getPlayer().getInventory().getItemInMainHand().getType() != Material.AIR) return;
+
+            Material blockType = event.getBlock().getType();
+
+            // Create a virtual iron pickaxe with no enchantments
+            ItemStack fakePick = new ItemStack(Material.IRON_PICKAXE);
+
+            // Check if this block can be broken by an iron pickaxe
+            if (!blockType.isItem()) return; // Just in case
+
+            if (!blockType.isBlock()) return;
+
+            // Cancel original event (no normal drop)
+            event.setDropItems(false);
+
+            // Manually break the block
+            event.getBlock().setType(Material.AIR);
+
+            // Drop what it would if mined with iron pickaxe
+            List<ItemStack> drops = event.getBlock().getDrops(fakePick, event.getPlayer()).stream().toList();
+
+            for (ItemStack drop : drops) {
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), drop);
+            }
+
+            // Optional: give XP
+            int xp = event.getExpToDrop();
+            if (xp > 0) {
+                event.getBlock().getWorld().spawn(event.getBlock().getLocation(), org.bukkit.entity.ExperienceOrb.class).setExperience(xp);
+            }
+        }
+    }
 
     @EventHandler
     public void onFoodEat(PlayerItemConsumeEvent event) {
@@ -101,7 +168,7 @@ public class listeners implements Listener {
                     ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                     if (section != null) {
                         for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                         }
                     }
                 }
@@ -117,7 +184,7 @@ public class listeners implements Listener {
                     ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                     if (section != null) {
                         for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                         }
                     }
                 }
@@ -271,9 +338,9 @@ public class listeners implements Listener {
 
         // just crafted core
         if (Util.shouldTakeBlood(player)) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 20 * 90, 4));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 20 * 90, 4));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 60 * 45, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 20 * 90, 4, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 20 * 90, 4, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 60 * 45, 1, false, false));
 
             String raceId = player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING);
             String raceDisplayName = config.getString(raceId + ".menu_name");

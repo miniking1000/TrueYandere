@@ -85,7 +85,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -95,7 +95,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -131,7 +131,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -141,7 +141,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -174,7 +174,7 @@ public final class TrueYandere extends JavaPlugin {
                     ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
                     if (section != null) {
                         for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
                         }
                     }
                 }

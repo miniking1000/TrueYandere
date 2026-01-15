@@ -17,9 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -158,11 +156,28 @@ public class listeners implements Listener {
     @EventHandler
     public void onFoodEat(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
-        if (player.getInventory().getItemInMainHand().getItemMeta() != null && event.getItem().equals(player.getInventory().getItemInMainHand())) {
-            ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING)));
-            if (race_temp == null) {
+        ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING)));
+        if (race_temp == null) {
+            return;
+        }
+        if (race_temp.getKeys(false).contains("spec") && race_temp.getConfigurationSection("spec").getKeys(false).contains("diet")) {
+            List<Material> meats = List.of(Material.BEEF, Material.COOKED_BEEF, Material.PORKCHOP, Material.COOKED_PORKCHOP, Material.MUTTON, Material.COOKED_MUTTON,
+                    Material.CHICKEN, Material.COOKED_CHICKEN, Material.RABBIT, Material.COOKED_RABBIT, Material.COD, Material.COOKED_COD,
+                    Material.SALMON, Material.COOKED_SALMON, Material.TROPICAL_FISH, Material.PUFFERFISH, Material.ROTTEN_FLESH, Material.SPIDER_EYE, Material.RABBIT_STEW);
+            boolean isMeat = meats.contains(event.getItem().getType());
+            String diet = race_temp.getConfigurationSection("spec").getString("diet");
+            if (diet.equalsIgnoreCase("meat_only") && !isMeat) {
+                event.setCancelled(true);
+                message.send(player, "&cВаш организм способен переварить только мясную пищу.", false);
+                return;
+            } else if (diet.equalsIgnoreCase("meat_hater") && isMeat) {
+                event.setCancelled(true);
+                message.send(player, "&cВаш организм способен переварить только растительную пищу.", false);
                 return;
             }
+        }
+
+        if (player.getInventory().getItemInMainHand().getItemMeta() != null && event.getItem().equals(player.getInventory().getItemInMainHand())) {
             if (race_temp.getKeys(false).contains("foods") && race_temp.getKeys(false).contains("sub_effects")) {
                 if (race_temp.getStringList("foods").contains(player.getInventory().getItemInMainHand().getType().getKey().getKey())){
                     ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
@@ -175,10 +190,6 @@ public class listeners implements Listener {
             }
         }
         if (player.getInventory().getItemInOffHand().getItemMeta() != null && event.getItem().equals(player.getInventory().getItemInOffHand())) {
-            ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING)));
-            if (race_temp == null) {
-                return;
-            }
             if (race_temp.getKeys(false).contains("foods") && race_temp.getKeys(false).contains("sub_effects")) {
                 if (race_temp.getStringList("foods").contains(player.getInventory().getItemInOffHand().getType().getKey().getKey())){
                     ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
@@ -189,6 +200,19 @@ public class listeners implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void forThatOneRace(EntityExhaustionEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING)));
+        if (race_temp == null) {
+            return;
+        }
+        if (race_temp.getKeys(false).contains("spec") && race_temp.getConfigurationSection("spec").getKeys(false).contains("hunger")) {
+            double modifier = race_temp.getConfigurationSection("spec").getDouble("hunger");
+            event.setExhaustion((float) (event.getExhaustion()*modifier));
         }
     }
 

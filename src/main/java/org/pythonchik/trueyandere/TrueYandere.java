@@ -5,11 +5,13 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.BlockType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
 
 public final class TrueYandere extends JavaPlugin {
     public static FileConfiguration config;
@@ -76,6 +80,38 @@ public final class TrueYandere extends JavaPlugin {
             if (race_temp == null) {
                 return;
             }
+            if (race_temp.getKeys(false).contains("spec") && race_temp.getConfigurationSection("spec").getKeys(false).contains("armor")) {
+                PlayerInventory inv = player.getInventory();
+                ItemStack[] armor = inv.getArmorContents();
+
+                boolean changed = false;
+
+                for (int i = 0; i < armor.length; i++) {
+                    ItemStack item = armor[i];
+
+                    if (item == null || item.getType().isAir()) continue;
+
+                    if (!canWear(race_temp, item)) {
+                        ItemStack drop = item.clone();
+
+                        armor[i] = null;
+                        player.getWorld().dropItemNaturally(
+                                player.getLocation(),
+                                drop
+                        );
+
+                        changed = true;
+                    }
+                }
+
+                if (changed) {
+                    inv.setArmorContents(armor);
+                    player.updateInventory();
+                    message.send(player, "&cВы не смоги удержать часть брони!", false);
+                }
+
+            }
+
             if (race_temp.getKeys(false).contains("biomes") || race_temp.getKeys(false).contains("height")) {
                 if (race_temp.getKeys(false).contains("height")) {
                     // height
@@ -190,6 +226,29 @@ public final class TrueYandere extends JavaPlugin {
             }
         }
     }
+
+    public boolean canWear(ConfigurationSection race_temp, ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) return true;
+
+        String materialName = item.getType().name();
+
+        boolean isArmor = materialName.endsWith("_HELMET") ||
+                materialName.endsWith("_CHESTPLATE") ||
+                materialName.endsWith("_LEGGINGS") ||
+                materialName.endsWith("_BOOTS");
+
+        if (!isArmor) return true;
+        String maxTier = race_temp.getConfigurationSection("spec").getString("armor", "NETHERITE");
+        List<String> tiers = Arrays.asList("LEATHER", "GOLD", "CHAINMAIL", "IRON", "DIAMOND", "NETHERITE");
+
+        int playerLimit = tiers.indexOf(maxTier);
+
+        String itemTier = materialName.split("_")[0];
+        int currentItemTier = tiers.indexOf(itemTier);
+
+        return currentItemTier <= playerLimit;
+    }
+
     public void setDefaultAttributes(Player player) {
         if (player.getAttribute(Attribute.GENERIC_ARMOR) != null) {
             player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0);

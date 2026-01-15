@@ -391,3 +391,30 @@ hydra:
     f: "https://s.namemc.com/i/71cab64fb0492b96.png"
     m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
   menu_name: "&6Гидра"
+
+sirgal:
+  type: "combined"
+  class: "animaLike"
+  craft: "animaLike;dragon+animaLike;yae"
+  attributes:
+    GENERIC_SCALE: 1.2
+    GENERIC_MAX_HEALTH: 28
+    GENERIC_SAFE_FALL_DISTANCE: 6
+    GENERIC_MOVEMENT_SPEED: 0.14
+    GENERIC_KNOCKBACK_RESISTANCE: 0.2
+    GENERIC_ATTACK_DAMAGE: 5
+  effects:
+    NIGHT_VISION: 1
+  spec:
+    diet: "meat_only"
+    armor: "IRON"
+    hunger: 1.2
+
+  menu_head: "http://textures.minecraft.net/texture/eb90d51d0ca50bc4121b082b8af4956f538fac5e1cca58b10cfb4ba754d4a4"
+  menu_name: "&6Сергал"
+  menu_lore:
+    - "&7Воинственные антропоморфные хищники, готовые пожертвовать своей защитой в угоду мобильности."
+    - "&7Известны своей невероятной скоростью, выносливостью и силой."
+  skin:
+    f: "https://s.namemc.com/i/79bf246fa1cc01cb.png"
+    m: "https://s.namemc.com/i/79bf246fa1cc01cb.png"

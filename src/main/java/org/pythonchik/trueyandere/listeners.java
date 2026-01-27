@@ -7,21 +7,22 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -93,6 +94,34 @@ public class listeners implements Listener {
     }
 
     @EventHandler
+    public void onPlayerDamangeEnity(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player player)) return;
+        if (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("thorntail")) {
+            if (new Random().nextInt(1, 100) <= 70 && event.getEntity() instanceof LivingEntity target) {
+                target.addPotionEffect(PotionEffectType.POISON.createEffect(7*20, 1));
+            }
+        }
+
+    }
+    @EventHandler
+    public void onFireDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("thorntail")) {
+            EntityDamageEvent.DamageCause cause = event.getCause();
+
+            if (cause == EntityDamageEvent.DamageCause.FIRE ||
+                    cause == EntityDamageEvent.DamageCause.FIRE_TICK ||
+                    cause == EntityDamageEvent.DamageCause.LAVA ||
+                    cause == EntityDamageEvent.DamageCause.HOT_FLOOR) {
+
+                double newDamage = event.getDamage() * 1.5;
+                event.setDamage(newDamage);
+            }
+        }
+    }
+
+
+    @EventHandler
     public void onVoidgoomClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("voiddude")) {
@@ -111,44 +140,6 @@ public class listeners implements Listener {
                     pearl.setShooter(player);
                     voiddudescd.put(player.getUniqueId(), System.currentTimeMillis());
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-
-        if (!event.getPlayer().getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("cobble")) {
-
-            if (event.getPlayer().getInventory().getItemInMainHand().getType() != Material.AIR) return;
-
-            Material blockType = event.getBlock().getType();
-
-            // Create a virtual iron pickaxe with no enchantments
-            ItemStack fakePick = new ItemStack(Material.IRON_PICKAXE);
-
-            // Check if this block can be broken by an iron pickaxe
-            if (!blockType.isItem()) return; // Just in case
-
-            if (!blockType.isBlock()) return;
-
-            // Cancel original event (no normal drop)
-            event.setDropItems(false);
-
-            // Manually break the block
-            event.getBlock().setType(Material.AIR);
-
-            // Drop what it would if mined with iron pickaxe
-            List<ItemStack> drops = event.getBlock().getDrops(fakePick, event.getPlayer()).stream().toList();
-
-            for (ItemStack drop : drops) {
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), drop);
-            }
-
-            // Optional: give XP
-            int xp = event.getExpToDrop();
-            if (xp > 0) {
-                event.getBlock().getWorld().spawn(event.getBlock().getLocation(), org.bukkit.entity.ExperienceOrb.class).setExperience(xp);
             }
         }
     }
@@ -231,7 +222,8 @@ public class listeners implements Listener {
 
     public void task() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getPersistentDataContainer().getOrDefault(Util.Keys.Race.getValue(), PersistentDataType.STRING, "random dude with no tag").equals("elf")) {
+            String race = player.getPersistentDataContainer().getOrDefault(Util.Keys.Race.getValue(), PersistentDataType.STRING, "random dude with no tag");
+            if (race.equals("elf")) {
                 Location currentLocation = player.getLocation();
 
                 if (!lastLocation.containsKey(player)) {
@@ -257,6 +249,16 @@ public class listeners implements Listener {
                 for (Player heh : Bukkit.getOnlinePlayers()) heh.showPlayer(plugin, player);
                 timeStill.put(player, 0);
                 lastLocation.put(player, currentLocation);
+            }
+            else if (race.equals("thorntail")) {
+                if (player.getLocation().getBlock().getLightLevel() <= 4) {
+                    player.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(3*20,1));
+                }
+                if (player.getWorld().getEnvironment() == World.Environment.NORMAL
+                        && (player.getWorld().getTime() < 12300 || player.getWorld().getTime() > 23850)
+                        && player.getLocation().getBlock().getLightFromSky() == 15) {
+                    player.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(3*20, 0));
+                }
             }
         }
     }
@@ -381,6 +383,51 @@ public class listeners implements Listener {
         }
     }
 
+    @EventHandler
+    public void onRebirthCoreCleanCraft(PrepareItemCraftEvent event) {
+
+        CraftingInventory inv = event.getInventory();
+        ItemStack[] matrix = inv.getMatrix();
+
+        int filledCoreCount = 0;
+        int nonAirCount = 0;
+
+        for (ItemStack item : matrix) {
+            if (item == null || item.getType().isAir()) {
+                continue;
+            }
+
+            nonAirCount++;
+
+            if (isFilledRebirthCore(item)) {
+                filledCoreCount += item.getAmount();
+            }
+        }
+
+        // ✔ строго: ровно 1 предмет и он — заполненное ядро
+        if (nonAirCount == 1 && filledCoreCount == 1) {
+            inv.setResult(CraftManager.createEmptyRebirthCore());
+        }
+
+        // ❗ ВАЖНО:
+        // если условие НЕ выполнено — НИЧЕГО НЕ ДЕЛАЕМ
+        // → vanilla / другие рецепты работают как обычно
+    }
+
+    private boolean isFilledRebirthCore(ItemStack stack) {
+        if (stack == null || stack.getType() != Material.STRUCTURE_BLOCK) return false;
+        if (!stack.hasItemMeta()) return false;
+
+        ItemMeta meta = stack.getItemMeta();
+        String blood = meta.getPersistentDataContainer().get(
+                Util.Keys.BloodType.getValue(),
+                PersistentDataType.STRING
+        );
+
+        return blood != null && !blood.isEmpty();
+    }
+
+
 
     @EventHandler
     public void clickEvent(InventoryClickEvent event) {
@@ -408,7 +455,7 @@ public class listeners implements Listener {
                     } else {
                         if (event.getCurrentItem().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "c-race"))) {
                             if (race.equals("human")) {
-                                setDefaultAttributes(player);
+                                TrueYandere.setDefaultAttributes(player);
                                 player.getPersistentDataContainer().set(Util.Keys.Race.getValue(), PersistentDataType.STRING, race);
                                 message.send(player, "&6Теперь Вы играете за расу &r" + config.getString(race + ".menu_name"));
                             } else {
@@ -501,95 +548,5 @@ public class listeners implements Listener {
         }
     }
 
-    public void setDefaultAttributes(Player player) {
-        for (Player heh : Bukkit.getOnlinePlayers()) heh.showPlayer(plugin, player);
-        if (player.getAttribute(Attribute.GENERIC_ARMOR) != null) {
-            player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS) != null) {
-            player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE) != null) {
-            player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK) != null) {
-            player.getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ATTACK_SPEED) != null) {
-            player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4);
-        }
-        if (player.getAttribute(Attribute.GENERIC_BURNING_TIME) != null) {
-            player.getAttribute(Attribute.GENERIC_BURNING_TIME).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE) != null) {
-            player.getAttribute(Attribute.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_FALL_DAMAGE_MULTIPLIER) != null) {
-            player.getAttribute(Attribute.GENERIC_FALL_DAMAGE_MULTIPLIER).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_GRAVITY) != null) {
-            player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.08);
-        }
-        // Btw, what is your favorite food, someone who reads this? please make a commit with your username and food below:
-        // I will start, miniking1000 - honey
-        if (player.getAttribute(Attribute.GENERIC_JUMP_STRENGTH) != null) {
-            player.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).setBaseValue(0.41999998688697815);
-        }
-        if (player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE) != null) {
-            player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_LUCK) != null) {
-            player.getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION) != null) {
-            player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null) {
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MOVEMENT_EFFICIENCY) != null) {
-            player.getAttribute(Attribute.GENERIC_MOVEMENT_EFFICIENCY).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED) != null) {
-            player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.10000000149011612);
-        }
-        if (player.getAttribute(Attribute.GENERIC_OXYGEN_BONUS) != null) {
-            player.getAttribute(Attribute.GENERIC_OXYGEN_BONUS).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE) != null) {
-            player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE).setBaseValue(3);
-        }
-        if (player.getAttribute(Attribute.GENERIC_SCALE) != null) {
-            player.getAttribute(Attribute.GENERIC_SCALE).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_STEP_HEIGHT) != null) {
-            player.getAttribute(Attribute.GENERIC_STEP_HEIGHT).setBaseValue(0.6);
-        }
-        if (player.getAttribute(Attribute.GENERIC_WATER_MOVEMENT_EFFICIENCY) != null) {
-            player.getAttribute(Attribute.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED) != null) {
-            player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE) != null) {
-            player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE).setBaseValue(4.5);
-        }
-        if (player.getAttribute(Attribute.PLAYER_ENTITY_INTERACTION_RANGE) != null) {
-            player.getAttribute(Attribute.PLAYER_ENTITY_INTERACTION_RANGE).setBaseValue(3);
-        }
-        if (player.getAttribute(Attribute.PLAYER_MINING_EFFICIENCY) != null) {
-            player.getAttribute(Attribute.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.PLAYER_SNEAKING_SPEED) != null) {
-            player.getAttribute(Attribute.PLAYER_SNEAKING_SPEED).setBaseValue(0.3);
-        }
-        if (player.getAttribute(Attribute.PLAYER_SUBMERGED_MINING_SPEED) != null) {
-            player.getAttribute(Attribute.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(0.2);
-        }
-        if (player.getAttribute(Attribute.PLAYER_SWEEPING_DAMAGE_RATIO) != null) {
-            player.getAttribute(Attribute.PLAYER_SWEEPING_DAMAGE_RATIO).setBaseValue(0);
-        }
-
-    }
 
 }

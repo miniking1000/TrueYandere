@@ -1,10 +1,9 @@
 package org.pythonchik.trueyandere;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,9 +18,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.Objects;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public final class TrueYandere extends JavaPlugin {
     public static FileConfiguration config;
@@ -121,7 +118,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -131,7 +128,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -167,7 +164,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -177,7 +174,7 @@ public final class TrueYandere extends JavaPlugin {
                             ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                                 }
                             }
                         }
@@ -210,7 +207,7 @@ public final class TrueYandere extends JavaPlugin {
                     ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
                     if (section != null) {
                         for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 200, section.getInt(effect)-1, false, false));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
                         }
                     }
                 }
@@ -248,92 +245,77 @@ public final class TrueYandere extends JavaPlugin {
 
         return currentItemTier <= playerLimit;
     }
-
-    public void setDefaultAttributes(Player player) {
-        if (player.getAttribute(Attribute.GENERIC_ARMOR) != null) {
-            player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS) != null) {
-            player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE) != null) {
-            player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK) != null) {
-            player.getAttribute(Attribute.GENERIC_ATTACK_KNOCKBACK).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_ATTACK_SPEED) != null) {
-            player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4);
-        }
-        if (player.getAttribute(Attribute.GENERIC_BURNING_TIME) != null) {
-            player.getAttribute(Attribute.GENERIC_BURNING_TIME).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE) != null) {
-            player.getAttribute(Attribute.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_FALL_DAMAGE_MULTIPLIER) != null) {
-            player.getAttribute(Attribute.GENERIC_FALL_DAMAGE_MULTIPLIER).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_GRAVITY) != null) {
-            player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.08);
-        }
-        if (player.getAttribute(Attribute.GENERIC_JUMP_STRENGTH) != null) {
-            player.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).setBaseValue(0.41999998688697815);
-        }
-        if (player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE) != null) {
-            player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_LUCK) != null) {
-            player.getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION) != null) {
-            player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null) {
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MOVEMENT_EFFICIENCY) != null) {
-            player.getAttribute(Attribute.GENERIC_MOVEMENT_EFFICIENCY).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED) != null) {
-            player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.10000000149011612);
-        }
-        if (player.getAttribute(Attribute.GENERIC_OXYGEN_BONUS) != null) {
-            player.getAttribute(Attribute.GENERIC_OXYGEN_BONUS).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE) != null) {
-            player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE).setBaseValue(3);
-        }
-        if (player.getAttribute(Attribute.GENERIC_SCALE) != null) {
-            player.getAttribute(Attribute.GENERIC_SCALE).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.GENERIC_STEP_HEIGHT) != null) {
-            player.getAttribute(Attribute.GENERIC_STEP_HEIGHT).setBaseValue(0.6);
-        }
-        if (player.getAttribute(Attribute.GENERIC_WATER_MOVEMENT_EFFICIENCY) != null) {
-            player.getAttribute(Attribute.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED) != null) {
-            player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED).setBaseValue(1);
-        }
-        if (player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE) != null) {
-            player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE).setBaseValue(4.5);
-        }
-        if (player.getAttribute(Attribute.PLAYER_ENTITY_INTERACTION_RANGE) != null) {
-            player.getAttribute(Attribute.PLAYER_ENTITY_INTERACTION_RANGE).setBaseValue(3);
-        }
-        if (player.getAttribute(Attribute.PLAYER_MINING_EFFICIENCY) != null) {
-            player.getAttribute(Attribute.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
-        }
-        if (player.getAttribute(Attribute.PLAYER_SNEAKING_SPEED) != null) {
-            player.getAttribute(Attribute.PLAYER_SNEAKING_SPEED).setBaseValue(0.3);
-        }
-        if (player.getAttribute(Attribute.PLAYER_SUBMERGED_MINING_SPEED) != null) {
-            player.getAttribute(Attribute.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(0.2);
-        }
-        if (player.getAttribute(Attribute.PLAYER_SWEEPING_DAMAGE_RATIO) != null) {
-            player.getAttribute(Attribute.PLAYER_SWEEPING_DAMAGE_RATIO).setBaseValue(0);
-        }
+    /*
+    public static void setDefaultAttributes(Player player) {
+        Registry.ATTRIBUTE.iterator().forEachRemaining(attribute -> {
+            AttributeInstance instance = player.getAttribute(attribute);
+            if (instance != null) {
+                System.out.println(instance.getAttribute().name() + " | " + instance.getDefaultValue() + " | " + instance.getBaseValue() + " | " + instance.getValue());
+                instance.setBaseValue(instance.getDefaultValue());
+            }
+        });
+    }
+     */
+    public static Map<Attribute, Double> AttributeDefaults = new HashMap<>();
+    static {
+        Map<Attribute, Double> map1 = Map.of(
+                Attribute.ARMOR, 0.0,
+                Attribute.ARMOR_TOUGHNESS, 0.0,
+                Attribute.ATTACK_DAMAGE, 1.0,
+                Attribute.ATTACK_KNOCKBACK, 0.0,
+                Attribute.ATTACK_SPEED, 4.0,
+                Attribute.BLOCK_BREAK_SPEED, 1.0,
+                Attribute.BLOCK_INTERACTION_RANGE, 4.5,
+                Attribute.BURNING_TIME, 1.0,
+                Attribute.CAMERA_DISTANCE, 4.0,
+                Attribute.ENTITY_INTERACTION_RANGE, 3.0
+        );
+        Map<Attribute, Double> map2 = Map.of(
+                Attribute.EXPLOSION_KNOCKBACK_RESISTANCE, 0.0,
+                Attribute.FALL_DAMAGE_MULTIPLIER, 1.0,
+                //Attribute.FLYING_SPEED, -1,
+                //Attribute.FOLLOW_RANGE, -1,
+                Attribute.GRAVITY, 0.08,
+                Attribute.JUMP_STRENGTH, 0.41999998688697815,
+                Attribute.KNOCKBACK_RESISTANCE, 0.0,
+                Attribute.LUCK, 0.0,
+                Attribute.MAX_ABSORPTION, 0.0,
+                Attribute.MAX_HEALTH, 20.0,
+                Attribute.MINING_EFFICIENCY, 0.0,
+                Attribute.MOVEMENT_EFFICIENCY, 0.0);
+        Map<Attribute, Double> map3 = Map.of(
+                Attribute.MOVEMENT_SPEED, 0.10000000149011612,
+                Attribute.OXYGEN_BONUS, 0.0,
+                Attribute.SAFE_FALL_DISTANCE, 3.0,
+                Attribute.SCALE, 1.0,
+                Attribute.SNEAKING_SPEED, 0.3,
+                //Attribute.SPAWN_REINFORCEMENTS, -1,
+                Attribute.STEP_HEIGHT, 0.6,
+                Attribute.SUBMERGED_MINING_SPEED, 0.2,
+                Attribute.SWEEPING_DAMAGE_RATIO, 0.0,
+                //Attribute.TEMPT_RANGE, -1,
+                Attribute.WATER_MOVEMENT_EFFICIENCY, 0.0,
+                Attribute.WAYPOINT_RECEIVE_RANGE, 60000000.0
+        );
+        Map<Attribute, Double> map4 = Map.of(
+                Attribute.WAYPOINT_TRANSMIT_RANGE, 60000000.0
+        );
+        AttributeDefaults.putAll(map1);
+        AttributeDefaults.putAll(map2);
+        AttributeDefaults.putAll(map3);
+        AttributeDefaults.putAll(map4);
 
     }
+
+    public static void setDefaultAttributes(Player player) {
+        Registry.ATTRIBUTE.iterator().forEachRemaining(attribute -> {
+            AttributeInstance instance = player.getAttribute(attribute);
+            if (instance != null) {
+                instance.setBaseValue(AttributeDefaults.get(attribute));
+            }
+        });
+    }
+
 }
+
+

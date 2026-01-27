@@ -12,8 +12,8 @@ elf:
   class: "humanlike"
   slot: 10
   attributes:
-    GENERIC_SCALE: 1.15
-    GENERIC_SAFE_FALL_DISTANCE: 6
+    SCALE: 1.15
+    SAFE_FALL_DISTANCE: 6
   effects:
     SPEED: 1
   spec:
@@ -26,20 +26,20 @@ elf:
   menu_lore:
     - "&7Эльфы - хранители леса, отважные лучники, почитающие традиции,"
     - "&7очень ловкие и хорошо обращаются со стрелковым оружием."
-    - "&7Деревья их дом, они известны своими способностями работы с деревом."
+    - "&7Знают древнюю магию - божественная невидимость."
 
 dwarf:
   type: "race"
   class: "humanlike"
   slot: 19
   attributes:
-    GENERIC_SCALE: 0.5
-    GENERIC_MAX_HEALTH: 20
-    GENERIC_KNOCKBACK_RESISTANCE: 0.7
+    SCALE: 0.5
+    MAX_HEALTH: 20
+    KNOCKBACK_RESISTANCE: 0.7
   sub_attributes:
-    GENERIC_SCALE: 0.5
-    GENERIC_MAX_HEALTH: 20
-    GENERIC_KNOCKBACK_RESISTANCE: 0.5
+    SCALE: 0.5
+    MAX_HEALTH: 20
+    KNOCKBACK_RESISTANCE: 0.5
   sub_effects:
     HASTE: 2
     SLOWNESS: 1
@@ -50,18 +50,18 @@ dwarf:
   menu_head: "http://textures.minecraft.net/texture/cade1161319f7f18be5d5e51f1f7f147fb1d2626e8a76ceee446558fa5472205"
   menu_name: "&6Дварф"
   menu_lore:
-    - "&7Дварф - эти низкие работяги знают толк в шахтах,"
+    - "&7Дварф - эти невысокие ребята знают толк в шахтах,"
     - "&7их мускулатура позволяет быстро копать камень и руду, а так же"
-    - "&7невысокий рост проходить сквозь припятствия, идеальный вариант для шахтёров."
+    - "&7невысокий рост проходить сквозь препятствия, идеальный вариант для шахтёров."
 
 yae:
   type: "race"
   class: "animaLike"
   slot: 3
   attributes:
-    GENERIC_ATTACK_DAMAGE: 7
-    GENERIC_ATTACK_SPEED: 6
-    GENERIC_KNOCKBACK_RESISTANCE: 0
+    ATTACK_DAMAGE: 7
+    ATTACK_SPEED: 6
+    KNOCKBACK_RESISTANCE: 0
   foods:
     - sweet_berries
     - glow_berries
@@ -79,18 +79,18 @@ yae:
   menu_lore:
     - "&7Кицунэ - имеют человеческое тело с лисьими чертами, такими как ушки, хвост и острые клыки."
     - "&7Они могут иметь от одного до девяти хвостов, каждый из которых символизирует их силу и мудрость."
-    - "&7Известны своими смертоносными атаками, но малым здоровьем."
+    - "&7Известны своими смертоносными атаками, но очень легко отбрасываются."
 
 kadgit:
   type: "race"
   class: "animaLike"
   slot: 12
   attributes:
-    GENERIC_SCALE: 0.8
-    GENERIC_ATTACK_DAMAGE: 0.8
-    GENERIC_MOVEMENT_SPEED: 0.25
-    GENERIC_JUMP_STRENGTH: 0.55
-    GENERIC_SAFE_FALL_DISTANCE: 8
+    SCALE: 0.8
+    ATTACK_DAMAGE: 0.8
+    MOVEMENT_SPEED: 0.25
+    JUMP_STRENGTH: 0.55
+    SAFE_FALL_DISTANCE: 8
   foods:
     - tropical_fish
     - cooked_cod
@@ -108,20 +108,20 @@ kadgit:
   menu_lore:
     - "&7Каджиты - независимые и свободолюбивые существа, которые ценят свою свободу и независимость."
     - "&7Известны своей высокой ловкостью и проворством, что позволяет им легко перемещаться и избегать атак, "
-    - "&7но их когти наносят меньше урона, чем обычные атаки. "
+    - "&7но их когти наносят меньше урона, чем обычные атаки."
 
 dragon:
   type: "race"
   class: "animaLike"
   slot: 21
   attributes:
-    GENERIC_SCALE: 1.4
-    GENERIC_MAX_HEALTH: 30
-    GENERIC_MOVEMENT_SPEED: 0.08
-    GENERIC_KNOCKBACK_RESISTANCE: 1
-    GENERIC_ARMOR: 10
-    GENERIC_SAFE_FALL_DISTANCE: 12
-    GENERIC_JUMP_STRENGTH: 0.55
+    SCALE: 1.35
+    MAX_HEALTH: 30
+    MOVEMENT_SPEED: 0.09
+    KNOCKBACK_RESISTANCE: 1
+    ARMOR: 8
+    SAFE_FALL_DISTANCE: 12
+    JUMP_STRENGTH: 0.55
   foods:
     - cooked_beef
     - cooked_porkchop
@@ -148,14 +148,13 @@ dimon:
   class: "other"
   slot: 5
   attributes:
-    GENERIC_MAX_HEALTH: 40
-    GENERIC_ATTACK_DAMAGE: 3
-    GENERIC_JUMP_STRENGTH: 0.55
-    GENERIC_SAFE_FALL_DISTANCE: 5
-    GENERIC_STEP_HEIGHT: 1
+    MAX_HEALTH: 40
+    ATTACK_DAMAGE: 3
+    JUMP_STRENGTH: 0.55
+    SAFE_FALL_DISTANCE: 5
   sub_attributes:
-    GENERIC_MAX_HEALTH: 12
-    GENERIC_ATTACK_DAMAGE: 0.5
+    MAX_HEALTH: 12
+    ATTACK_DAMAGE: 0.5
   sub_effects:
     SLOWNESS: 1
     FIRE_RESISTANCE: 1
@@ -177,29 +176,29 @@ dimon:
     - "crimson_forest"
     - "soul_sand_valley"
     - "basalt_deltas"
+    - "deep_dark"
 
 aksol:
   type: "race"
   class: "other"
   slot: 14
   attributes:
-    GENERIC_SCALE: 0.85
-    GENERIC_MAX_HEALTH: 35
-    GENERIC_MOVEMENT_SPEED: 0.4
-    GENERIC_WATER_MOVEMENT_EFFICIENCY: 0.8
-    GENERIC_ATTACK_DAMAGE: 3
-    GENERIC_JUMP_STRENGTH: 0.55
-    GENERIC_SAFE_FALL_DISTANCE: 5
-    GENERIC_STEP_HEIGHT: 1
+    SCALE: 0.85
+    MAX_HEALTH: 35
+    MOVEMENT_SPEED: 0.4
+    WATER_MOVEMENT_EFFICIENCY: 0.8
+    ATTACK_DAMAGE: 3
+    JUMP_STRENGTH: 0.55
+    SAFE_FALL_DISTANCE: 5
   effects:
     CONDUIT_POWER: 1
     STRENGTH: 2
     REGENERATION: 2
   sub_attributes:
-    GENERIC_SCALE: 0.85
-    GENERIC_MAX_HEALTH: 14
-    GENERIC_MOVEMENT_SPEED: 0.04
-    GENERIC_ATTACK_DAMAGE: 0.5
+    SCALE: 0.85
+    MAX_HEALTH: 14
+    MOVEMENT_SPEED: 0.04
+    ATTACK_DAMAGE: 0.5
   sub_effects:
     SLOWNESS: 1
   skin:
@@ -224,27 +223,27 @@ aksol:
     - "river"
     - "frozen_river"
     - "lush_caves"
+    - "deep_dark"
 
 ararararararararararararararandra:
   type: "race"
   class: "other"
   slot: 23
   attributes:
-    GENERIC_SCALE: 0.75
-    GENERIC_MAX_HEALTH: 35
-    GENERIC_ATTACK_DAMAGE: 3
-    GENERIC_JUMP_STRENGTH: 0.55
-    GENERIC_SAFE_FALL_DISTANCE: 10
-    GENERIC_STEP_HEIGHT: 1
+    SCALE: 0.75
+    MAX_HEALTH: 35
+    ATTACK_DAMAGE: 3
+    JUMP_STRENGTH: 0.55
+    SAFE_FALL_DISTANCE: 10
   effects:
     SPEED: 1
     STRENGTH: 1
     REGENERATION: 1
   sub_attributes:
-    GENERIC_SCALE: 0.75
-    GENERIC_MAX_HEALTH: 14
-    GENERIC_SAFE_FALL_DISTANCE: 5
-    GENERIC_ATTACK_DAMAGE: 0.7
+    SCALE: 0.75
+    MAX_HEALTH: 14
+    SAFE_FALL_DISTANCE: 5
+    ATTACK_DAMAGE: 0.7
   sub_effects:
     SLOWNESS: 1
   skin:
@@ -301,39 +300,35 @@ angel:
   class: "combined"
   craft: "humanlike;human+other;dimon"
   attributes:
-    GENERIC_MAX_HEALTH: 36
-    GENERIC_ATTACK_DAMAGE: 3
-    GENERIC_JUMP_STRENGTH: 0.55
-    GENERIC_SAFE_FALL_DISTANCE: 15
-    GENERIC_GRAVITY: 0.06
+    MAX_HEALTH: 50
+    ATTACK_DAMAGE: 6
+    JUMP_STRENGTH: 0.55
+    SAFE_FALL_DISTANCE: 40
+    GRAVITY: 0.06
   effects:
     STRENGTH: 1
     REGENERATION: 1
   sub_attributes:
-    GENERIC_ATTACK_DAMAGE: 0.7
+    ATTACK_DAMAGE: 0.7
   sub_effects:
     SLOWNESS: 1
-  height: 100
-  skin:
-    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
-    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
-  menu_name: "&6Ангел"
+  height: 110
+  menu_name: "&7Падший ангел"
 
 elh:
   type: "combined"
   class: "combined"
   craft: "humanlike;elf+animaLike;*"
   attributes:
-    GENERIC_SCALE: 1.15
-    GENERIC_MAX_HEALTH: 30
-    GENERIC_SAFE_FALL_DISTANCE: 6
-    GENERIC_MOVEMENT_SPEED: 0.15
-    GENERIC_KNOCKBACK_RESISTANCE: 0.8
+    SCALE: 0.8
+    MAX_HEALTH: 30
+    MOVEMENT_SPEED: 0.15
+    KNOCKBACK_RESISTANCE: 0
   effects:
-    SPEED: 1
+    RESISTANCE: 1
   sub_effects:
-    REGENERATION: 2
-    SATURATION: 2
+    REGENERATION: 1
+    SATURATION: 1
   foods:
     - sweet_berries
     - glow_berries
@@ -348,68 +343,74 @@ elh:
     - cooked_salmon
   spec:
     arrow: 2
-  skin:
-    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
-    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
-  menu_name: "&6Эльх"
+  menu_name: "&7Эльх"
 
 voiddude:
   type: "combined"
   class: "combined"
   craft: "other;ararararararararararararararandra+animaLike;dragon"
   attributes:
-    GENERIC_MAX_HEALTH: 30
+    SCALE: 1.2
+    MAX_HEALTH: 60
+    ATTACK_DAMAGE: 6
+    JUMP_STRENGTH: 0.55
+    SAFE_FALL_DISTANCE: 10
   effects:
     SPEED: 1
-  skin:
-    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
-    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
-  menu_name: "&6Пустотник"
+    STRENGTH: 1
+    REGENERATION: 1
+  sub_attributes:
+    SCALE: 0.75
+    MAX_HEALTH: 20
+    ATTACK_DAMAGE: 0.7
+  sub_effects:
+    SLOWNESS: 1
+  biomes:
+    - "the_end"
+    - "end_midlands"
+    - "end_highlands"
+    - "small_end_islands"
+    - "end_barrens"
+  menu_name: "&7Пустотник"
 
 cobble:
   type: "combined"
   class: "combined"
   craft: "animaLike;dragon+humanlike;dwarf"
   attributes:
-    GENERIC_MAX_HEALTH: 30
+    SCALE: 0.5
+    MAX_HEALTH: 20
+    KNOCKBACK_RESISTANCE: 1
   effects:
-    SPEED: 1
-  skin:
-    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
-    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
-  menu_name: "&6Кобальд"
-
-hydra:
-  type: "combined"
-  class: "combined"
-  craft: "other;aksol+animaLike;dragon"
-  attributes:
-    GENERIC_MAX_HEALTH: 30
-  effects:
-    SPEED: 1
-  skin:
-    f: "https://s.namemc.com/i/71cab64fb0492b96.png"
-    m: "https://s.namemc.com/i/a675f5daa5e7f858.png"
-  menu_name: "&6Гидра"
+    INFESTED: 1
+    SLOWNESS: 1
+  sub_attributes:
+    SCALE: 0.5
+    MAX_HEALTH: 40
+    KNOCKBACK_RESISTANCE: 1
+  sub_effects:
+    HASTE: 1
+    RESISTANCE: 1
+  height: 85
+  menu_name: "&7Кобольд"
 
 sirgal:
   type: "combined"
   class: "animaLike"
   craft: "animaLike;dragon+animaLike;yae"
   attributes:
-    GENERIC_SCALE: 1.2
-    GENERIC_MAX_HEALTH: 28
-    GENERIC_SAFE_FALL_DISTANCE: 6
-    GENERIC_MOVEMENT_SPEED: 0.14
-    GENERIC_KNOCKBACK_RESISTANCE: 0.2
-    GENERIC_ATTACK_DAMAGE: 5
+    SCALE: 1.2
+    MAX_HEALTH: 28
+    SAFE_FALL_DISTANCE: 6
+    MOVEMENT_SPEED: 0.14
+    KNOCKBACK_RESISTANCE: 0.2
+    ATTACK_DAMAGE: 5
   effects:
     NIGHT_VISION: 1
   spec:
     diet: "meat_only"
     armor: "IRON"
     hunger: 1.2
-
   menu_head: "http://textures.minecraft.net/texture/eb90d51d0ca50bc4121b082b8af4956f538fac5e1cca58b10cfb4ba754d4a4"
   menu_name: "&6Сергал"
   menu_lore:
@@ -418,3 +419,40 @@ sirgal:
   skin:
     f: "https://s.namemc.com/i/79bf246fa1cc01cb.png"
     m: "https://s.namemc.com/i/79bf246fa1cc01cb.png"
+
+thorntail:
+  type: "combined"
+  class: "animaLike"
+  craft: "humanlike;dwarf+animaLike;kadgit"
+
+  attributes:
+    SCALE: 0.25
+    MAX_HEALTH: 15
+    SAFE_FALL_DISTANCE: 2
+    MOVEMENT_SPEED: 0.15
+    ATTACK_DAMAGE: 0.5
+    ATTACK_SPEED: 6
+    BLOCK_INTERACTION_RANGE: 5.5
+    ENTITY_INTERACTION_RANGE: 4.0
+    SNEAKING_SPEED: 0.4
+
+  foods:
+    - rotten_flesh
+  sub_effects:
+    REGENERATION: 1
+    SATURATION: 1
+    RESISTANCE : 1
+
+  effects:
+    NIGHT_VISION: 1
+
+  menu_head: "http://textures.minecraft.net/texture/c2ee199e3123e368105fe753e2359c182099a39f09dd1366d1186519c30f3f9b"
+  menu_name: "&6Скалковый шипохвост"
+  menu_lore:
+    - "&7Миниотюрная, но смертоносная антропорфная раса, что эволюционировала"
+    - "&7в скалковых глубинах."
+    - "&7Известны своим малым ростом и живучести в самых темных глубинах."
+
+  skin:
+    f: "https://s.namemc.com/i/77de7de42f6a46dd.png"
+    m: "https://s.namemc.com/i/77de7de42f6a46dd.png"

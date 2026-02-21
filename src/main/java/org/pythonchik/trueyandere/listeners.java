@@ -152,19 +152,26 @@ public class listeners implements Listener {
             return;
         }
         if (race_temp.getKeys(false).contains("spec") && race_temp.getConfigurationSection("spec").getKeys(false).contains("diet")) {
-            List<Material> meats = List.of(Material.BEEF, Material.COOKED_BEEF, Material.PORKCHOP, Material.COOKED_PORKCHOP, Material.MUTTON, Material.COOKED_MUTTON,
+            final List<Material> meats = List.of(Material.BEEF, Material.COOKED_BEEF, Material.PORKCHOP, Material.COOKED_PORKCHOP, Material.MUTTON, Material.COOKED_MUTTON,
                     Material.CHICKEN, Material.COOKED_CHICKEN, Material.RABBIT, Material.COOKED_RABBIT, Material.COD, Material.COOKED_COD,
                     Material.SALMON, Material.COOKED_SALMON, Material.TROPICAL_FISH, Material.PUFFERFISH, Material.ROTTEN_FLESH, Material.SPIDER_EYE, Material.RABBIT_STEW);
-            boolean isMeat = meats.contains(event.getItem().getType());
-            String diet = race_temp.getConfigurationSection("spec").getString("diet");
-            if (diet.equalsIgnoreCase("meat_only") && !isMeat) {
-                event.setCancelled(true);
-                message.send(player, "&cВаш организм способен переварить только мясную пищу.", false);
-                return;
-            } else if (diet.equalsIgnoreCase("meat_hater") && isMeat) {
-                event.setCancelled(true);
-                message.send(player, "&cВаш организм способен переварить только растительную пищу.", false);
-                return;
+            final List<Material> other_foods = List.of(Material.APPLE, Material.GOLDEN_APPLE, Material.ENCHANTED_GOLDEN_APPLE, Material.MELON_SLICE, Material.SWEET_BERRIES,
+                    Material.GLOW_BERRIES, Material.CHORUS_FRUIT, Material.CARROT, Material.GOLDEN_CARROT, Material.POTATO, Material.BAKED_POTATO, Material.POISONOUS_POTATO,
+                    Material.BEETROOT, Material.DRIED_KELP, Material.BREAD, Material.COOKIE, Material.CAKE, Material.PUMPKIN_PIE, Material.BEETROOT_SOUP, Material.MUSHROOM_STEW,
+                    Material.SUSPICIOUS_STEW, Material.MILK_BUCKET, Material.HONEY_BOTTLE);
+            // food HAS to be real food, eatable dirt is for everyone!
+            if (meats.contains(event.getItem().getType()) || other_foods.contains(event.getItem().getType())) {
+                boolean isMeat = meats.contains(event.getItem().getType());
+                String diet = race_temp.getConfigurationSection("spec").getString("diet");
+                if (diet.equalsIgnoreCase("meat_only") && !isMeat) {
+                    event.setCancelled(true);
+                    message.send(player, "&cВаш организм способен переварить только мясную пищу.", false);
+                    return;
+                } else if (diet.equalsIgnoreCase("meat_hater") && isMeat) {
+                    event.setCancelled(true);
+                    message.send(player, "&cВаш организм способен переварить только растительную пищу.", false);
+                    return;
+                }
             }
         }
 

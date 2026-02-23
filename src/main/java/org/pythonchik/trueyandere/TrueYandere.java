@@ -73,11 +73,12 @@ public final class TrueYandere extends JavaPlugin {
     public void applyEffects() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!player.getGameMode().equals(GameMode.SURVIVAL)) continue;
-            ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING)));
+            ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING)));
             if (race_temp == null) {
                 return;
             }
-            if (race_temp.getKeys(false).contains("spec") && race_temp.getConfigurationSection("spec").getKeys(false).contains("armor")) {
+            //drop armor
+            if (race_temp.contains("spec") && race_temp.getConfigurationSection("spec").contains("armor")) {
                 PlayerInventory inv = player.getInventory();
                 ItemStack[] armor = inv.getArmorContents();
 
@@ -109,13 +110,14 @@ public final class TrueYandere extends JavaPlugin {
 
             }
 
-            if (race_temp.getKeys(false).contains("biomes") || race_temp.getKeys(false).contains("height")) {
-                if (race_temp.getKeys(false).contains("height")) {
+            //race has a condition
+            if (race_temp.contains("biomes") || race_temp.contains("height")) {
+                if (race_temp.contains("height")) {
                     // height
                     boolean condition = player.getLocation().getY() >= race_temp.getInt("height");
                     if (condition) {
-                        if (race_temp.getKeys(false).contains("effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
+                        if (race_temp.contains("effects")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
                                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
@@ -124,8 +126,8 @@ public final class TrueYandere extends JavaPlugin {
                         }
                     } // effects
                     else {
-                        if (race_temp.getKeys(false).contains("sub_effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
+                        if (race_temp.contains("sub_effects")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
                                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
@@ -135,8 +137,8 @@ public final class TrueYandere extends JavaPlugin {
                     }
                     setDefaultAttributes(player);
                     if (condition) {
-                        if (race_temp.getKeys(false).contains("attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
+                        if (race_temp.contains("attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("attributes");
                             if (section != null) {
                                 for (String attribute : section.getKeys(false)) {
                                     player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
@@ -146,8 +148,8 @@ public final class TrueYandere extends JavaPlugin {
 
                     } // You are above, use main
                     else {
-                        if (race_temp.getKeys(false).contains("sub_attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
+                        if (race_temp.contains("sub_attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
                             if (section != null) {
                                 for (String attribute : section.getKeys(false)) {
                                     player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
@@ -158,10 +160,10 @@ public final class TrueYandere extends JavaPlugin {
                     } // You are below, use SUB
                 } else {
                     //biomes
-                    boolean condition = race_temp.getStringList("biomes").contains(player.getLocation().getWorld().getBiome(player.getLocation()).getKey().getKey().toLowerCase()) || (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING).equals("aksol") && player.getLocation().getBlock().isLiquid() && player.getLocation().getBlock().getType().toString().toLowerCase().contains("water")); //player is in biome
+                    boolean condition = race_temp.getStringList("biomes").contains(player.getLocation().getWorld().getBiome(player.getLocation()).getKey().getKey().toLowerCase()) || (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("aksol") && player.getLocation().getBlock().isLiquid() && player.getLocation().getBlock().getType().toString().toLowerCase().contains("water")); //player is in biome
                     if (condition){
-                        if (race_temp.getKeys(false).contains("effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
+                        if (race_temp.contains("effects")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
                                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
@@ -170,8 +172,8 @@ public final class TrueYandere extends JavaPlugin {
                         }
                     } // effects
                     else {
-                        if (race_temp.getKeys(false).contains("sub_effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
+                        if (race_temp.contains("sub_effects")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
                             if (section != null) {
                                 for (String effect : section.getKeys(false)) {
                                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
@@ -181,8 +183,8 @@ public final class TrueYandere extends JavaPlugin {
                     }
                     setDefaultAttributes(player);
                     if (condition) {
-                        if (race_temp.getKeys(false).contains("attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
+                        if (race_temp.contains("attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("attributes");
                             if (section != null) {
                                 for (String attribute : section.getKeys(false)) {
                                     player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
@@ -191,8 +193,8 @@ public final class TrueYandere extends JavaPlugin {
                         }
                     } // You are above, use main
                     else {
-                        if (race_temp.getKeys(false).contains("sub_attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
+                        if (race_temp.contains("sub_attributes")) {
+                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
                             if (section != null) {
                                 for (String attribute : section.getKeys(false)) {
                                     player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
@@ -203,8 +205,8 @@ public final class TrueYandere extends JavaPlugin {
                     } // You are below, use SUB
                 }
             } else {  // unconditionally
-                if (race_temp.getKeys(false).contains("effects")) {
-                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("effects");
+                if (race_temp.contains("effects")) {
+                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("effects");
                     if (section != null) {
                         for (String effect : section.getKeys(false)) {
                             player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
@@ -212,8 +214,8 @@ public final class TrueYandere extends JavaPlugin {
                     }
                 }
                 setDefaultAttributes(player);
-                if (race_temp.getKeys(false).contains("attributes")) {
-                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING))).getConfigurationSection("attributes");
+                if (race_temp.contains("attributes")) {
+                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("attributes");
                     if (section != null) {
                         for (String attribute : section.getKeys(false)) {
                             player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));

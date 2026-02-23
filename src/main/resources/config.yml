@@ -389,8 +389,8 @@ cobble:
     MAX_HEALTH: 40
     KNOCKBACK_RESISTANCE: 1
   sub_effects:
-    HASTE: 1
-    RESISTANCE: 1
+    HASTE: 10
+    RESISTANCE: 3
   height: 85
   menu_name: "&7Кобольд"
 

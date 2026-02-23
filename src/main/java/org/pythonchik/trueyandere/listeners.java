@@ -36,10 +36,11 @@ public class listeners implements Listener {
     TrueYandere plugin;
     FileConfiguration config;
     private final HashMap<UUID, Long> lastUse = new HashMap<>();
-    private final long cooldownMillis = 20 * 60 * 1000; // 20 min
+    private final long angelCooldownMillis = 20 * 60 * 1000; // 20 min
+    private final long FuryCooldownMillis = 20 * 60 * 1000; // 20 min
     private final HashMap<UUID, Long> voiddudescd = new HashMap<>();
     private final long voidCDMS = 20 * 1000; // 20 sec
-
+    private final HashMap<UUID, Long> furryCooldowns = new HashMap<>();
 
 
     public listeners(TrueYandere plugin, FileConfiguration config) {
@@ -69,7 +70,7 @@ public class listeners implements Listener {
         // Проверка кулдауна
         long now = System.currentTimeMillis();
         Long lastUsed = lastUse.get(player.getUniqueId());
-        if (lastUsed != null && now - lastUsed < cooldownMillis) return;
+        if (lastUsed != null && now - lastUsed < angelCooldownMillis) return;
 
         // Применяем "ангельское спасение"
         event.setCancelled(true);
@@ -106,7 +107,8 @@ public class listeners implements Listener {
     @EventHandler
     public void onFireDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("thorntail")) {
+        String race = player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING);
+        if (race.equals("thorntail")) {
             EntityDamageEvent.DamageCause cause = event.getCause();
 
             if (cause == EntityDamageEvent.DamageCause.FIRE ||
@@ -117,6 +119,22 @@ public class listeners implements Listener {
                 double newDamage = event.getDamage() * 1.5;
                 event.setDamage(newDamage);
             }
+        } else if (race.equals("sirgal")) {
+            ConfigurationSection raceConfig = config.getConfigurationSection("sirgal");
+            double threshold = raceConfig.getDouble("spec.fury_threshold");
+            double healthAfterHit = player.getHealth() - event.getFinalDamage();
+            if (healthAfterHit <= threshold && healthAfterHit > 0) {
+
+                long now = System.currentTimeMillis();
+                if (now - furryCooldowns.getOrDefault(player.getUniqueId(), 0L) > FuryCooldownMillis) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 1, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 1, false, false, true));
+                    player.setExhaustion(40f);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WOLF_BIG_HURT, 1.5f, 0.5f);
+                    furryCooldowns.put(player.getUniqueId(), now);
+                }
+            }
+
         }
     }
 

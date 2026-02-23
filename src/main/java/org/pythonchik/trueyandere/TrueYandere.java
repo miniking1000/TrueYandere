@@ -3,16 +3,13 @@ package org.pythonchik.trueyandere;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +19,7 @@ import java.util.*;
 
 public final class TrueYandere extends JavaPlugin {
     public static FileConfiguration config;
-    Plugin plugin = this;
+    JavaPlugin plugin = this;
     static TrueYandere instance;
     public static Message message;
     public static Message getMessage(){return message;}
@@ -73,9 +70,11 @@ public final class TrueYandere extends JavaPlugin {
     public void applyEffects() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!player.getGameMode().equals(GameMode.SURVIVAL)) continue;
-            ConfigurationSection race_temp = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING)));
+            String raceId = player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING);
+            if (raceId == null) continue;
+            ConfigurationSection race_temp = config.getConfigurationSection(raceId);
             if (race_temp == null) {
-                return;
+                continue;
             }
             //drop armor
             if (race_temp.contains("spec") && race_temp.getConfigurationSection("spec").contains("armor")) {
@@ -110,119 +109,80 @@ public final class TrueYandere extends JavaPlugin {
 
             }
 
-            //race has a condition
-            if (race_temp.contains("biomes") || race_temp.contains("height")) {
-                if (race_temp.contains("height")) {
-                    // height
-                    boolean condition = player.getLocation().getY() >= race_temp.getInt("height");
-                    if (condition) {
-                        if (race_temp.contains("effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("effects");
-                            if (section != null) {
-                                for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                                }
-                            }
-                        }
-                    } // effects
-                    else {
-                        if (race_temp.contains("sub_effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
-                            if (section != null) {
-                                for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                                }
-                            }
-                        }
-                    }
-                    setDefaultAttributes(player);
-                    if (condition) {
-                        if (race_temp.contains("attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("attributes");
-                            if (section != null) {
-                                for (String attribute : section.getKeys(false)) {
-                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                }
-                            }
-                        }
+            //setDefaultAttributes(player);
 
-                    } // You are above, use main
-                    else {
-                        if (race_temp.contains("sub_attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
-                            if (section != null) {
-                                for (String attribute : section.getKeys(false)) {
-                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                }
-                            }
-                        }
-
-                    } // You are below, use SUB
-                } else {
-                    //biomes
-                    boolean condition = race_temp.getStringList("biomes").contains(player.getLocation().getWorld().getBiome(player.getLocation()).getKey().getKey().toLowerCase()) || (player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING).equals("aksol") && player.getLocation().getBlock().isLiquid() && player.getLocation().getBlock().getType().toString().toLowerCase().contains("water")); //player is in biome
-                    if (condition){
-                        if (race_temp.contains("effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("effects");
-                            if (section != null) {
-                                for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                                }
-                            }
-                        }
-                    } // effects
-                    else {
-                        if (race_temp.contains("sub_effects")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
-                            if (section != null) {
-                                for (String effect : section.getKeys(false)) {
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                                }
-                            }
-                        }
-                    }
-                    setDefaultAttributes(player);
-                    if (condition) {
-                        if (race_temp.contains("attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("attributes");
-                            if (section != null) {
-                                for (String attribute : section.getKeys(false)) {
-                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                }
-                            }
-                        }
-                    } // You are above, use main
-                    else {
-                        if (race_temp.contains("sub_attributes")) {
-                            ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_attributes");
-                            if (section != null) {
-                                for (String attribute : section.getKeys(false)) {
-                                    player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                                }
-                            }
-                        }
-
-                    } // You are below, use SUB
-                }
-            } else {  // unconditionally
-                if (race_temp.contains("effects")) {
-                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("effects");
-                    if (section != null) {
-                        for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                        }
-                    }
-                }
-                setDefaultAttributes(player);
-                if (race_temp.contains("attributes")) {
-                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("attributes");
-                    if (section != null) {
-                        for (String attribute : section.getKeys(false)) {
-                            player.getAttribute(Attribute.valueOf(attribute)).setBaseValue(section.getDouble(attribute));
-                        }
-                    }
-                }
+            ConfigurationSection trigger = race_temp.getConfigurationSection("tick_trigger");
+            if (trigger == null) {
+                applyEffectsSection(player, race_temp.getConfigurationSection("effects"));
+                applyAttributesSection(player, race_temp.getConfigurationSection("attributes"));
+                continue;
             }
+
+            boolean conditionMatched = evaluateConditions(player, trigger.getConfigurationSection("conditions"));
+            String stateKey = conditionMatched ? "on_true" : "on_false";
+            ConfigurationSection selectedState = trigger.getConfigurationSection(stateKey);
+
+            if (selectedState == null) continue;
+            applyEffectsSection(player, selectedState.getConfigurationSection("effects"));
+            applyAttributesSection(player, selectedState.getConfigurationSection("attributes"));
+        }
+    }
+
+    private boolean evaluateConditions(Player player, ConfigurationSection conditions) {
+        if (conditions == null || conditions.getKeys(false).isEmpty()) return true;
+
+        if (conditions.contains("height_min") && player.getLocation().getY() < conditions.getDouble("height_min")) {
+            return false;
+        }
+        if (conditions.contains("height_max") && player.getLocation().getY() > conditions.getDouble("height_max")) {
+            return false;
+        }
+        boolean inWater = player.getLocation().getBlock().isLiquid() && player.getLocation().getBlock().getType().toString().toLowerCase().contains("water");
+        if (conditions.contains("biomes")) {
+            String biomeKey = player.getLocation().getWorld().getBiome(player.getLocation()).getKey().getKey().toLowerCase();
+            boolean inBiomeList = conditions.getStringList("biomes").contains(biomeKey);
+            if (conditions.getBoolean("biome_or_water", false)) {
+                if (!(inBiomeList || inWater)) return false;
+            } else if (!inBiomeList) {
+                return false;
+            }
+        }
+        if (conditions.getBoolean("require_water", false) && !inWater) {
+            return false;
+        }
+
+        String timeCondition = conditions.getString("time", "any").toLowerCase(Locale.ROOT);
+        long worldTime = player.getWorld().getTime();
+        if (timeCondition.equals("day") && !(worldTime < 12300 || worldTime > 23850)) {
+            return false;
+        }
+        if (timeCondition.equals("night") && (worldTime < 12300 || worldTime > 23850)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void applyEffectsSection(Player player, ConfigurationSection section) {
+        if (section == null) return;
+        for (String effect : section.getKeys(false)) {
+            PotionEffectType effectType = PotionEffectType.getByName(effect);
+            if (effectType == null) continue;
+            player.addPotionEffect(new PotionEffect(effectType, 600, section.getInt(effect) - 1, false, false));
+        }
+    }
+
+    private void applyAttributesSection(Player player, ConfigurationSection section) {
+        if (section == null) return;
+        for (String attribute : section.getKeys(false)) {
+            AttributeInstance instance;
+            try {
+                instance = player.getAttribute(Attribute.valueOf(attribute));
+            } catch (IllegalArgumentException ignored) {
+                continue;
+            }
+            if (instance == null) continue;
+            instance.setBaseValue(section.getDouble(attribute));
         }
     }
 
@@ -313,11 +273,9 @@ public final class TrueYandere extends JavaPlugin {
         Registry.ATTRIBUTE.iterator().forEachRemaining(attribute -> {
             AttributeInstance instance = player.getAttribute(attribute);
             if (instance != null) {
-                instance.setBaseValue(AttributeDefaults.get(attribute));
+                instance.setBaseValue(AttributeDefaults.getOrDefault(attribute, instance.getDefaultValue()));
             }
         });
     }
 
 }
-
-

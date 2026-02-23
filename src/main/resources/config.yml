@@ -11,11 +11,6 @@ elf:
   type: "race"
   class: "humanlike"
   slot: 10
-  attributes:
-    SCALE: 1.15
-    SAFE_FALL_DISTANCE: 6
-  effects:
-    SPEED: 1
   spec:
     arrow: 3
   skin:
@@ -27,23 +22,18 @@ elf:
     - "&7Эльфы - хранители леса, отважные лучники, почитающие традиции,"
     - "&7очень ловкие и хорошо обращаются со стрелковым оружием."
     - "&7Знают древнюю магию - божественная невидимость."
+  tick_trigger:
+    on_true:
+      attributes:
+        SCALE: 1.15
+        SAFE_FALL_DISTANCE: 6
+      effects:
+        SPEED: 1
 
 dwarf:
   type: "race"
   class: "humanlike"
   slot: 19
-  attributes:
-    SCALE: 0.5
-    MAX_HEALTH: 20
-    KNOCKBACK_RESISTANCE: 0.7
-  sub_attributes:
-    SCALE: 0.5
-    MAX_HEALTH: 20
-    KNOCKBACK_RESISTANCE: 0.5
-  sub_effects:
-    HASTE: 2
-    SLOWNESS: 1
-  height: 0
   skin:
     f: "https://s.namemc.com/i/b3cff68303174c45.png"
     m: "https://s.namemc.com/i/b3cff68303174c45.png"
@@ -53,24 +43,25 @@ dwarf:
     - "&7Дварф - эти невысокие ребята знают толк в шахтах,"
     - "&7их мускулатура позволяет быстро копать камень и руду, а так же"
     - "&7невысокий рост проходить сквозь препятствия, идеальный вариант для шахтёров."
+  tick_trigger:
+    conditions:
+      height_min: 0
+    on_true:
+      attributes:
+        SCALE: 0.5
+        KNOCKBACK_RESISTANCE: 0.7
+    on_false:
+      attributes:
+        SCALE: 0.5
+        KNOCKBACK_RESISTANCE: 0.5
+      effects:
+        HASTE: 10
+        SLOWNESS: 1
 
 yae:
   type: "race"
   class: "animaLike"
   slot: 3
-  attributes:
-    ATTACK_DAMAGE: 7
-    ATTACK_SPEED: 6
-    KNOCKBACK_RESISTANCE: 0
-  foods:
-    - sweet_berries
-    - glow_berries
-    - cooked_chicken
-    - chicken
-  sub_effects:
-    REGENERATION: 2
-    SATURATION: 2
-    SPEED: 2
   skin:
     f: "https://s.namemc.com/i/4cf8441310d2dc9f.png"
     m: "https://s.namemc.com/i/4cf8441310d2dc9f.png"
@@ -80,26 +71,29 @@ yae:
     - "&7Кицунэ - имеют человеческое тело с лисьими чертами, такими как ушки, хвост и острые клыки."
     - "&7Они могут иметь от одного до девяти хвостов, каждый из которых символизирует их силу и мудрость."
     - "&7Известны своими смертоносными атаками, но очень легко отбрасываются."
+  tick_trigger:
+    on_true:
+      attributes:
+        ATTACK_DAMAGE: 7
+        ATTACK_SPEED: 6
+        KNOCKBACK_RESISTANCE: 0
+  food_trigger:
+    conditions:
+      foods:
+      - "sweet_berries"
+      - "glow_berries"
+      - "cooked_chicken"
+      - "chicken"
+    on_true:
+      effects:
+        REGENERATION: 2
+        SATURATION: 2
+        SPEED: 2
 
 kadgit:
   type: "race"
   class: "animaLike"
   slot: 12
-  attributes:
-    SCALE: 0.8
-    ATTACK_DAMAGE: 0.8
-    MOVEMENT_SPEED: 0.25
-    JUMP_STRENGTH: 0.55
-    SAFE_FALL_DISTANCE: 8
-  foods:
-    - tropical_fish
-    - cooked_cod
-    - cooked_salmon
-    - salmon
-    - cod
-  sub_effects:
-    ABSORPTION: 1
-    REGENERATION: 1
   skin:
     f: "https://s.namemc.com/i/4c937666277cf83d.png"
     m: "https://s.namemc.com/i/4c937666277cf83d.png"
@@ -109,31 +103,31 @@ kadgit:
     - "&7Каджиты - независимые и свободолюбивые существа, которые ценят свою свободу и независимость."
     - "&7Известны своей высокой ловкостью и проворством, что позволяет им легко перемещаться и избегать атак, "
     - "&7но их когти наносят меньше урона, чем обычные атаки."
+  tick_trigger:
+    on_true:
+      attributes:
+        SCALE: 0.8
+        ATTACK_DAMAGE: 0.8
+        MOVEMENT_SPEED: 0.25
+        JUMP_STRENGTH: 0.55
+        SAFE_FALL_DISTANCE: 8
+  food_trigger:
+    conditions:
+      foods:
+      - "tropical_fish"
+      - "cooked_cod"
+      - "cooked_salmon"
+      - "salmon"
+      - "cod"
+    on_true:
+      effects:
+        ABSORPTION: 1
+        REGENERATION: 1
 
 dragon:
   type: "race"
   class: "animaLike"
   slot: 21
-  attributes:
-    SCALE: 1.35
-    MAX_HEALTH: 30
-    MOVEMENT_SPEED: 0.09
-    KNOCKBACK_RESISTANCE: 1
-    ARMOR: 8
-    SAFE_FALL_DISTANCE: 12
-    JUMP_STRENGTH: 0.55
-  foods:
-    - cooked_beef
-    - cooked_porkchop
-    - cooked_mutton
-    - cooked_chicken
-    - cooked_rabbit
-    - cooked_cod
-    - cooked_salmon
-  sub_effects:
-    RESISTANCE: 2
-    REGENERATION: 2
-    SLOWNESS: 2
   skin:
     f: "https://s.namemc.com/i/00a1aa8e2da11a8b.png"
     m: "https://s.namemc.com/i/00a1aa8e2da11a8b.png"
@@ -142,26 +136,36 @@ dragon:
   menu_lore:
     - "&7Драконорождённые - выглядят как драконы, стоящие на задних лапах и принявшие гуманоидную форму, "
     - "&7потеряв при этом крылья и хвост. Известны своим крепким здоровьем, а так же медлительностью."
+  tick_trigger:
+    on_true:
+      attributes:
+        SCALE: 1.35
+        MAX_HEALTH: 30
+        MOVEMENT_SPEED: 0.09
+        KNOCKBACK_RESISTANCE: 1
+        ARMOR: 8
+        SAFE_FALL_DISTANCE: 12
+        JUMP_STRENGTH: 0.55
+  food_trigger:
+    conditions:
+      foods:
+      - "cooked_beef"
+      - "cooked_porkchop"
+      - "cooked_mutton"
+      - "cooked_chicken"
+      - "cooked_rabbit"
+      - "cooked_cod"
+      - "cooked_salmon"
+    on_true:
+      effects:
+        RESISTANCE: 2
+        REGENERATION: 2
+        SLOWNESS: 2
 
 dimon:
   type: "race"
   class: "other"
   slot: 5
-  attributes:
-    MAX_HEALTH: 40
-    ATTACK_DAMAGE: 3
-    JUMP_STRENGTH: 0.55
-    SAFE_FALL_DISTANCE: 5
-  sub_attributes:
-    MAX_HEALTH: 12
-    ATTACK_DAMAGE: 0.5
-  sub_effects:
-    SLOWNESS: 1
-    FIRE_RESISTANCE: 1
-  effects:
-    FIRE_RESISTANCE: 1
-    STRENGTH: 2
-    REGENERATION: 2
   skin:
     f: "https://s.namemc.com/i/765f55d73cbb47ad.png"
     m: "https://s.namemc.com/i/765f55d73cbb47ad.png"
@@ -170,37 +174,37 @@ dimon:
   menu_lore:
     - "&7Демон - посланники Незера, их кровь - это лава, они очень хорошо ориентируются в Нижнем мире,"
     - "&7что позволяет им выдерживать такие температуры - загадка."
-  biomes:
-    - "nether_wastes"
-    - "warped_forest"
-    - "crimson_forest"
-    - "soul_sand_valley"
-    - "basalt_deltas"
-    - "deep_dark"
+  tick_trigger:
+    conditions:
+      biomes:
+        - "nether_wastes"
+        - "warped_forest"
+        - "crimson_forest"
+        - "soul_sand_valley"
+        - "basalt_deltas"
+        - "deep_dark"
+    on_true:
+      attributes:
+        MAX_HEALTH: 40
+        ATTACK_DAMAGE: 3
+        JUMP_STRENGTH: 0.55
+        SAFE_FALL_DISTANCE: 5
+      effects:
+        FIRE_RESISTANCE: 1
+        STRENGTH: 2
+        REGENERATION: 2
+    on_false:
+      attributes:
+        MAX_HEALTH: 12
+        ATTACK_DAMAGE: 0.5
+      effects:
+        SLOWNESS: 1
+        FIRE_RESISTANCE: 1
 
 aksol:
   type: "race"
   class: "other"
   slot: 14
-  attributes:
-    SCALE: 0.85
-    MAX_HEALTH: 35
-    MOVEMENT_SPEED: 0.4
-    WATER_MOVEMENT_EFFICIENCY: 0.8
-    ATTACK_DAMAGE: 3
-    JUMP_STRENGTH: 0.55
-    SAFE_FALL_DISTANCE: 5
-  effects:
-    CONDUIT_POWER: 1
-    STRENGTH: 2
-    REGENERATION: 2
-  sub_attributes:
-    SCALE: 0.85
-    MAX_HEALTH: 14
-    MOVEMENT_SPEED: 0.04
-    ATTACK_DAMAGE: 0.5
-  sub_effects:
-    SLOWNESS: 1
   skin:
     f: "https://s.namemc.com/i/86fb57a540fa9b23.png"
     m: "https://s.namemc.com/i/86fb57a540fa9b23.png"
@@ -210,42 +214,48 @@ aksol:
     - "&7Аксол - или по-простому аксолотль, раса амфибий, хорошо плавающих в морях и океанах, "
     - "&7строители подводных городов."
     - "&7Известны своими удивительными способностями под водой и регенерацией перед смертью."
-  biomes:
-    - "ocean"
-    - "deep_ocean"
-    - "cold_ocean"
-    - "deep_cold_ocean"
-    - "frozen_ocean"
-    - "deep_frozen_ocean"
-    - "deep_lukewarm_ocean"
-    - "lukewarm_ocean"
-    - "warm_ocean"
-    - "river"
-    - "frozen_river"
-    - "lush_caves"
-    - "deep_dark"
+  tick_trigger:
+    conditions:
+      biomes:
+      - "ocean"
+      - "deep_ocean"
+      - "cold_ocean"
+      - "deep_cold_ocean"
+      - "frozen_ocean"
+      - "deep_frozen_ocean"
+      - "deep_lukewarm_ocean"
+      - "lukewarm_ocean"
+      - "warm_ocean"
+      - "river"
+      - "frozen_river"
+      - "lush_caves"
+      - "deep_dark"
+      biome_or_water: true
+    on_true:
+      attributes:
+        SCALE: 0.85
+        MAX_HEALTH: 35
+        MOVEMENT_SPEED: 0.4
+        WATER_MOVEMENT_EFFICIENCY: 0.8
+        ATTACK_DAMAGE: 3
+        JUMP_STRENGTH: 0.55
+        SAFE_FALL_DISTANCE: 5
+      effects:
+        CONDUIT_POWER: 1
+        STRENGTH: 3
+        REGENERATION: 3
+    on_false:
+      attributes:
+        SCALE: 0.85
+        MAX_HEALTH: 14
+        ATTACK_DAMAGE: 0.5
+      effects:
+        SLOWNESS: 1
 
 ararararararararararararararandra:
   type: "race"
   class: "other"
   slot: 23
-  attributes:
-    SCALE: 0.75
-    MAX_HEALTH: 35
-    ATTACK_DAMAGE: 3
-    JUMP_STRENGTH: 0.55
-    SAFE_FALL_DISTANCE: 10
-  effects:
-    SPEED: 1
-    STRENGTH: 1
-    REGENERATION: 1
-  sub_attributes:
-    SCALE: 0.75
-    MAX_HEALTH: 14
-    SAFE_FALL_DISTANCE: 5
-    ATTACK_DAMAGE: 0.7
-  sub_effects:
-    SLOWNESS: 1
   skin:
     f: "https://s.namemc.com/i/ac809d8763a3dd3c.png"
     m: "https://s.namemc.com/i/ac809d8763a3dd3c.png"
@@ -254,15 +264,36 @@ ararararararararararararararandra:
   menu_lore:
     - "&7Аранара - лесные духи или же просто раса гриболюдей, о них мало что известно,"
     - "&7но живут они только там, где растут грибы..."
-  biomes:
-    - "swamp"
-    - "mangrove_swamp"
-    - "dark_forest"
-    - "taiga"
-    - "nether_wastes"
-    - "lush_caves"
-    - "mushroom_fields"
-    - "deep_dark"
+  tick_trigger:
+    conditions:
+      biomes:
+      - "swamp"
+      - "mangrove_swamp"
+      - "dark_forest"
+      - "taiga"
+      - "nether_wastes"
+      - "lush_caves"
+      - "mushroom_fields"
+      - "deep_dark"
+    on_true:
+      attributes:
+        SCALE: 0.75
+        MAX_HEALTH: 35
+        ATTACK_DAMAGE: 3
+        JUMP_STRENGTH: 0.55
+        SAFE_FALL_DISTANCE: 10
+      effects:
+        SPEED: 1
+        STRENGTH: 1
+        REGENERATION: 1
+    on_false:
+      attributes:
+        SCALE: 0.75
+        MAX_HEALTH: 14
+        SAFE_FALL_DISTANCE: 5
+        ATTACK_DAMAGE: 0.7
+      effects:
+        SLOWNESS: 1
 
 info1:
   type: "info"
@@ -272,7 +303,6 @@ info1:
   lore:
     - "&7Расы - уникальная механика игры на сервере DreamFox, введённая на 5 сезоне, для поддержания разнообразия игры"
     - "&7и социума игроков, основная цель - разнообразить экономические отношения и идеологические между игроками."
-
 info2:
   type: "info"
   slot: 16
@@ -280,7 +310,6 @@ info2:
   name: "&6Флаконы душ"
   lore:
     - "&7У вас {Hapax Legomenon} флаконов душ."
-
 info3:
   type: "info"
   slot: 25
@@ -299,118 +328,127 @@ angel:
   type: "combined"
   class: "combined"
   craft: "humanlike;human+other;dimon"
-  attributes:
-    MAX_HEALTH: 50
-    ATTACK_DAMAGE: 6
-    JUMP_STRENGTH: 0.55
-    SAFE_FALL_DISTANCE: 40
-    GRAVITY: 0.06
-  effects:
-    STRENGTH: 1
-    REGENERATION: 1
-  sub_attributes:
-    ATTACK_DAMAGE: 0.7
-  sub_effects:
-    SLOWNESS: 1
-  height: 110
   menu_name: "&7Падший ангел"
+  tick_trigger:
+    conditions:
+      height_min: 110
+    on_true:
+      attributes:
+        MAX_HEALTH: 50
+        ATTACK_DAMAGE: 6
+        JUMP_STRENGTH: 0.55
+        SAFE_FALL_DISTANCE: 40
+        GRAVITY: 0.06
+      effects:
+        STRENGTH: 1
+        REGENERATION: 1
+    on_false:
+      attributes:
+        ATTACK_DAMAGE: 0.7
+      effects:
+        SLOWNESS: 1
 
 elh:
   type: "combined"
   class: "combined"
   craft: "humanlike;elf+animaLike;*"
-  attributes:
-    SCALE: 0.8
-    MAX_HEALTH: 30
-    MOVEMENT_SPEED: 0.15
-    KNOCKBACK_RESISTANCE: 0
-  effects:
-    RESISTANCE: 1
-  sub_effects:
-    REGENERATION: 1
-    SATURATION: 1
-  foods:
-    - sweet_berries
-    - glow_berries
-    - cooked_cod
-    - cooked_salmon
-    - cooked_beef
-    - cooked_porkchop
-    - cooked_mutton
-    - cooked_chicken
-    - cooked_rabbit
-    - cooked_cod
-    - cooked_salmon
   spec:
     arrow: 2
   menu_name: "&7Эльх"
+  tick_trigger:
+    on_true:
+      attributes:
+        SCALE: 0.8
+        MAX_HEALTH: 30
+        MOVEMENT_SPEED: 0.15
+        KNOCKBACK_RESISTANCE: 0
+      effects:
+        RESISTANCE: 1
+  food_trigger:
+    conditions:
+      foods:
+      - "sweet_berries"
+      - "glow_berries"
+      - "cooked_cod"
+      - "cooked_salmon"
+      - "cooked_beef"
+      - "cooked_porkchop"
+      - "cooked_mutton"
+      - "cooked_chicken"
+      - "cooked_rabbit"
+      - "cooked_cod"
+      - "cooked_salmon"
+    on_true:
+      effects:
+        REGENERATION: 1
+        SATURATION: 1
 
 voiddude:
   type: "combined"
   class: "combined"
   craft: "other;ararararararararararararararandra+animaLike;dragon"
-  attributes:
-    SCALE: 1.2
-    MAX_HEALTH: 60
-    ATTACK_DAMAGE: 6
-    JUMP_STRENGTH: 0.55
-    SAFE_FALL_DISTANCE: 10
-  effects:
-    SPEED: 1
-    STRENGTH: 1
-    REGENERATION: 1
-  sub_attributes:
-    SCALE: 0.75
-    MAX_HEALTH: 20
-    ATTACK_DAMAGE: 0.7
-  sub_effects:
-    SLOWNESS: 1
-  biomes:
-    - "the_end"
-    - "end_midlands"
-    - "end_highlands"
-    - "small_end_islands"
-    - "end_barrens"
   menu_name: "&7Пустотник"
+  tick_trigger:
+    conditions:
+      biomes:
+      - "the_end"
+      - "end_midlands"
+      - "end_highlands"
+      - "small_end_islands"
+      - "end_barrens"
+    on_true:
+      attributes:
+        SCALE: 1.2
+        MAX_HEALTH: 60
+        ATTACK_DAMAGE: 6
+        JUMP_STRENGTH: 0.55
+        SAFE_FALL_DISTANCE: 10
+      effects:
+        SPEED: 1
+        STRENGTH: 1
+        REGENERATION: 1
+    on_false:
+      attributes:
+        SCALE: 0.75
+        MAX_HEALTH: 20
+        ATTACK_DAMAGE: 0.7
+      effects:
+        SLOWNESS: 1
 
 cobble:
   type: "combined"
   class: "combined"
   craft: "animaLike;dragon+humanlike;dwarf"
-  attributes:
-    SCALE: 0.5
-    MAX_HEALTH: 20
-    KNOCKBACK_RESISTANCE: 1
-  effects:
-    INFESTED: 1
-    SLOWNESS: 1
-  sub_attributes:
-    SCALE: 0.5
-    MAX_HEALTH: 40
-    KNOCKBACK_RESISTANCE: 1
-  sub_effects:
-    HASTE: 10
-    RESISTANCE: 3
-  height: 85
   menu_name: "&7Кобольд"
+  tick_trigger:
+    conditions:
+      height_min: 85
+    on_true:
+      attributes:
+        SCALE: 0.5
+        MAX_HEALTH: 20
+        KNOCKBACK_RESISTANCE: 1
+      effects:
+        INFESTED: 1
+        SLOWNESS: 1
+    on_false:
+      attributes:
+        SCALE: 0.5
+        MAX_HEALTH: 40
+        KNOCKBACK_RESISTANCE: 1
+      effects:
+        HASTE: 10
+        RESISTANCE: 3
 
 sirgal:
   type: "combined"
   class: "animaLike"
   craft: "animaLike;dragon+animaLike;yae"
-  attributes:
-    SCALE: 1.2
-    MAX_HEALTH: 28
-    SAFE_FALL_DISTANCE: 6
-    MOVEMENT_SPEED: 0.14
-    KNOCKBACK_RESISTANCE: 0.2
-    ATTACK_DAMAGE: 5
-  effects:
-    NIGHT_VISION: 1
   spec:
     diet: "meat_only"
     armor: "IRON"
-    hunger: 1.2
+    hunger: 1.6
+    fury_threshold: 6.0
   menu_head: "http://textures.minecraft.net/texture/eb90d51d0ca50bc4121b082b8af4956f538fac5e1cca58b10cfb4ba754d4a4"
   menu_name: "&6Сергал"
   menu_lore:
@@ -419,40 +457,99 @@ sirgal:
   skin:
     f: "https://s.namemc.com/i/79bf246fa1cc01cb.png"
     m: "https://s.namemc.com/i/79bf246fa1cc01cb.png"
+  tick_trigger:
+    on_true:
+      attributes:
+        SCALE: 1.2
+        MAX_HEALTH: 28
+        SAFE_FALL_DISTANCE: 6
+        MOVEMENT_SPEED: 0.18
+        KNOCKBACK_RESISTANCE: 0.2
+        ATTACK_DAMAGE: 6
+      effects:
+        NIGHT_VISION: 1
 
 thorntail:
   type: "combined"
   class: "animaLike"
   craft: "humanlike;dwarf+animaLike;kadgit"
-
-  attributes:
-    SCALE: 0.25
-    MAX_HEALTH: 15
-    SAFE_FALL_DISTANCE: 2
-    MOVEMENT_SPEED: 0.15
-    ATTACK_DAMAGE: 0.5
-    ATTACK_SPEED: 6
-    BLOCK_INTERACTION_RANGE: 5.5
-    ENTITY_INTERACTION_RANGE: 4.0
-    SNEAKING_SPEED: 0.4
-
-  foods:
-    - rotten_flesh
-  sub_effects:
-    REGENERATION: 1
-    SATURATION: 1
-    RESISTANCE : 1
-
-  effects:
-    NIGHT_VISION: 1
-
   menu_head: "http://textures.minecraft.net/texture/c2ee199e3123e368105fe753e2359c182099a39f09dd1366d1186519c30f3f9b"
   menu_name: "&6Скалковый шипохвост"
   menu_lore:
-    - "&7Миниотюрная, но смертоносная антропорфная раса, что эволюционировала"
-    - "&7в скалковых глубинах."
-    - "&7Известны своим малым ростом и живучести в самых темных глубинах."
-
+  - "&7Миниотюрная, но смертоносная антропорфная раса, что эволюционировала"
+  - "&7в скалковых глубинах."
+  - "&7Известны своим малым ростом и живучести в самых темных глубинах."
   skin:
     f: "https://s.namemc.com/i/77de7de42f6a46dd.png"
     m: "https://s.namemc.com/i/77de7de42f6a46dd.png"
+  tick_trigger:
+    on_true:
+      attributes:
+        SCALE: 0.25
+        MAX_HEALTH: 15
+        SAFE_FALL_DISTANCE: 2
+        MOVEMENT_SPEED: 0.15
+        ATTACK_DAMAGE: 0.5
+        ATTACK_SPEED: 6
+        BLOCK_INTERACTION_RANGE: 5.5
+        ENTITY_INTERACTION_RANGE: 4.0
+        SNEAKING_SPEED: 0.4
+      effects:
+        NIGHT_VISION: 1
+  food_trigger:
+    conditions:
+      foods:
+      - "rotten_flesh"
+    on_true:
+      effects:
+        REGENERATION: 1
+        SATURATION: 1
+        RESISTANCE: 1
+
+negrob:
+  type: "combined"
+  class: "other"
+  craft: "other;dimon+animaLike;yae"
+  spec:
+    burn_in_sunlight: true
+  menu_head: "http://textures.minecraft.net/texture/3a41061ed854151fdda13f683dbe2997a2735caa5a2a59a5699314602a14f9"
+  menu_name: "&8Негроб"
+  menu_lore:
+  - "&7Раса нежити, что со временем обрела сознание."
+  - "&7Скрывается во тьме, прячась ото всех."
+  - "&7Ослабевает днём, но обретает силу ночью."
+  skin:
+    f: "https://s.namemc.com/i/e538124677daa72e.png"
+    m: "https://s.namemc.com/i/e538124677daa72e.png"
+  tick_trigger:
+    conditions:
+      time: "night"
+    on_true:
+      attributes:
+        MAX_HEALTH: 30
+        ATTACK_DAMAGE: 3
+      effects:
+        NIGHT_VISION: 1
+        STRENGTH: 1
+        RESISTANCE: 1
+        REGENERATION: 1
+        WATER_BREATHING: 1
+    on_false:
+      attributes:
+        MAX_HEALTH: 16
+        ATTACK_DAMAGE: 0.7
+      effects:
+        SLOWNESS: 1
+        WEAKNESS: 1
+        REGENERATION: 1
+        WATER_BREATHING: 1
+  food_trigger:
+    conditions:
+      foods:
+      - "rotten_flesh"
+      - "spider_eye"
+    on_true:
+      effects:
+        SATURATION: 2
+        JUMP_BOOST: 2
+        SPEED: 2

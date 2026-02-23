@@ -120,8 +120,9 @@ public class listeners implements Listener {
                 event.setDamage(newDamage);
             }
         } else if (race.equals("sirgal")) {
+            //TODO fix it
             ConfigurationSection raceConfig = config.getConfigurationSection("sirgal");
-            double threshold = raceConfig.getDouble("spec.fury_threshold");
+            double threshold = raceConfig.getDouble("spec.fury_threshold", 6.0);
             double healthAfterHit = player.getHealth() - event.getFinalDamage();
             if (healthAfterHit <= threshold && healthAfterHit > 0) {
 
@@ -130,7 +131,7 @@ public class listeners implements Listener {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 1, false, false, true));
                     player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 1, false, false, true));
                     player.setExhaustion(40f);
-                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WOLF_BIG_HURT, 1.5f, 0.5f);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WOLF_BIG_HURT, 1.5f, 1f);
                     furryCooldowns.put(player.getUniqueId(), now);
                 }
             }
@@ -193,29 +194,20 @@ public class listeners implements Listener {
             }
         }
 
-        if (player.getInventory().getItemInMainHand().getItemMeta() != null && event.getItem().equals(player.getInventory().getItemInMainHand())) {
-            if (race_temp.getKeys(false).contains("foods") && race_temp.getKeys(false).contains("sub_effects")) {
-                if (race_temp.getStringList("foods").contains(player.getInventory().getItemInMainHand().getType().getKey().getKey())){
-                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
-                    if (section != null) {
-                        for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                        }
-                    }
-                }
-            }
-        }
-        if (player.getInventory().getItemInOffHand().getItemMeta() != null && event.getItem().equals(player.getInventory().getItemInOffHand())) {
-            if (race_temp.getKeys(false).contains("foods") && race_temp.getKeys(false).contains("sub_effects")) {
-                if (race_temp.getStringList("foods").contains(player.getInventory().getItemInOffHand().getType().getKey().getKey())){
-                    ConfigurationSection section = config.getConfigurationSection(Objects.requireNonNull(player.getPersistentDataContainer().get(Util.Keys.Race.getValue(), PersistentDataType.STRING))).getConfigurationSection("sub_effects");
-                    if (section != null) {
-                        for (String effect : section.getKeys(false)) {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), 600, section.getInt(effect)-1, false, false));
-                        }
-                    }
-                }
-            }
+        ConfigurationSection foodTrigger = race_temp.getConfigurationSection("food_trigger");
+        if (foodTrigger == null) return;
+        ConfigurationSection conditions = foodTrigger.getConfigurationSection("conditions");
+        if (conditions == null) return;
+        if (!conditions.getStringList("foods").contains(event.getItem().getType().getKey().getKey())) return;
+
+        ConfigurationSection onTrue = foodTrigger.getConfigurationSection("on_true");
+        if (onTrue == null) return;
+        ConfigurationSection section = onTrue.getConfigurationSection("effects");
+        if (section == null) return;
+        for (String effect : section.getKeys(false)) {
+            PotionEffectType effectType = PotionEffectType.getByName(effect);
+            if (effectType == null) continue;
+            player.addPotionEffect(new PotionEffect(effectType, 600, section.getInt(effect)-1, false, false));
         }
     }
 
@@ -248,6 +240,20 @@ public class listeners implements Listener {
     public void task() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String race = player.getPersistentDataContainer().getOrDefault(Util.Keys.Race.getValue(), PersistentDataType.STRING, "random dude with no tag");
+
+            ConfigurationSection raceConfig = config.getConfigurationSection(race);
+            if (raceConfig != null && raceConfig.getBoolean("spec.burn_in_sunlight", false)) {
+                boolean isDay = player.getWorld().getTime() < 12300 || player.getWorld().getTime() > 23850;
+                boolean exposedToSky = player.getLocation().getBlock().getLightFromSky() == 15;
+                boolean inOverworld = player.getWorld().getEnvironment() == World.Environment.NORMAL;
+                boolean clearWeather = !player.getWorld().hasStorm() && !player.getWorld().isThundering();
+                ItemStack helmet = player.getInventory().getHelmet();
+                boolean hasNoHelmet = helmet == null || helmet.getType().isAir();
+                if (isDay && exposedToSky && inOverworld && clearWeather && hasNoHelmet) {
+                    player.setFireTicks(60);
+                }
+            }
+
             if (race.equals("elf")) {
                 Location currentLocation = player.getLocation();
 
@@ -486,9 +492,10 @@ public class listeners implements Listener {
                             } else {
                                 if (player.getPersistentDataContainer().get(Util.Keys.CH4NGE.getValue(), PersistentDataType.INTEGER) >= 1) {
                                     boolean allow = true;
-                                    if (config.getConfigurationSection(race).getKeys(false).contains("biomes")) {
+                                    ConfigurationSection raceTickConditions = config.getConfigurationSection(race + ".tick_trigger.conditions");
+                                    if (raceTickConditions != null && raceTickConditions.contains("biomes")) {
                                         allow = false;
-                                        for (String racceeee : config.getStringList(race + ".biomes")) {
+                                        for (String racceeee : raceTickConditions.getStringList("biomes")) {
                                             if (player.getWorld().getBiome(player.getLocation()).getKey().getKey().equals(racceeee)){
                                                 allow = true;
                                             }
@@ -516,6 +523,7 @@ public class listeners implements Listener {
 
                                     player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, player.getLocation().add(0,1,0), 150);
                                     player.getWorld().playSound(player, Sound.ITEM_TOTEM_USE, 0.7f, 1);
+                                    TrueYandere.setDefaultAttributes(player);
                                     message.send(player, "&6Выбрана раса " + config.getString(race + ".menu_name"));
 
                                     TextComponent base_comp = new TextComponent("Если хотите то можете установить один из скинов расы:  ");

@@ -63,6 +63,7 @@ public class RaceCommand implements CommandExecutor {
                         }
                         if (!player.getPersistentDataContainer().get(new NamespacedKey(plugin, "race"), PersistentDataType.STRING).equals(args[2])) { // if player is NOT what you want him to be
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "race"), PersistentDataType.STRING, args[2]);
+                            TrueYandere.setDefaultAttributes(player);
                             if (!(args.length >= 4 && (args[3].equalsIgnoreCase("silent") || args[3].equalsIgnoreCase("[silent]")))) {
                                 message.send(player, "&7Теперь Вы играете за расу &r" + config.getString(args[2] + ".menu_name"));
                             }
